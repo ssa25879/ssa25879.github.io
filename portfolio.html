@@ -1,0 +1,1655 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>윤우상 포트폴리오</title>
+  <style>
+    /* ============================================================
+     🔧 이 파일은 HTML을 직접 수정하는 방식입니다.
+     각 섹션의 <!-- ✏️ 수정: ... --> 주석 아래 텍스트만 바꾸면 됩니다.
+     CSS는 상단 :root 변수만 건드리면 전체 색상이 바뀝니다.
+
+     📄 프로젝트 상세 페이지 안내
+     - 프로젝트 카드를 클릭(또는 Tab으로 포커스 후 Enter/Space)하면
+       실제 페이지 이동 없이 화면 하단의 <div id="detail-view"> 안 해당
+       project-detail 섹션이 나타납니다.
+     - 프로젝트를 추가하려면: 1) projects-grid에 카드 추가 2) detail-view에
+       project-detail 섹션 추가. 두 군데 모두 같은 id (예: detail-6) 로 연결하세요.
+
+     ♿ 접근성 안내
+     - 프로젝트 카드는 div지만 role="button" tabindex="0" 으로 키보드 포커스가
+       가능하고, Enter/Space 입력 시 handleCardKey()가 상세 페이지를 엽니다.
+     ============================================================ */
+
+    :root {
+      --primary: #0064e0;
+      --primary-deep: #0143b5;
+      --primary-soft: rgba(0, 100, 224, 0.12);
+      --on-primary: #ffffff;
+
+      --ink-button-bg: #050505;
+      --ink-button-text: #ffffff;
+
+      --canvas: #ffffff;
+      --surface-soft: #f5f5f7;
+      --hairline: #dadce2;
+      --hairline-soft: #eaebef;
+
+      --ink-deep: #050505;
+      --ink: #1c1e21;
+      --charcoal: #4b4f56;
+      --slate: #65676b;
+      --steel: #8a8d91;
+      --stone: #b0b3b8;
+
+      --success: #1d9a6c;
+      --warning: #ffc107;
+      --critical: #e41e3f;
+
+      --radius-sm: 4px;
+      --radius-lg: 8px;
+      --radius-xl: 16px;
+      --radius-xxl: 24px;
+      --radius-xxxl: 32px;
+      --radius-full: 100px;
+      --radius-circle: 50%;
+
+      --space-base: 16px;
+      --space-lg: 20px;
+      --space-xl: 24px;
+      --space-xxl: 32px;
+      --space-section-sm: 48px;
+      --space-section: 64px;
+      --space-section-lg: 80px;
+
+      --page-bg: var(--surface-soft);
+      /* 카드 배경(--canvas)보다 살짝 어두워야 카드가 "떠 보임" */
+    }
+
+    body.dark {
+      --primary: #2e8cff;
+      --primary-deep: #0064e0;
+      --primary-soft: rgba(46, 140, 255, 0.18);
+      --ink-button-bg: #ffffff;
+      --ink-button-text: #050505;
+      --canvas: #0b0b0e;
+      --surface-soft: #17181c;
+      --hairline: rgba(255, 255, 255, 0.14);
+      --hairline-soft: rgba(255, 255, 255, 0.08);
+      --ink-deep: #f5f6f7;
+      --ink: #e4e6e8;
+      --charcoal: #c7cace;
+      --slate: #a7abb0;
+      --steel: #85898f;
+      --stone: #7a7e86;
+
+      --page-bg: #000000;
+      /* --canvas(#0B0B0E)보다 더 어둡게 해서 카드가 페이지보다 밝게 "떠 보이도록" */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        "Montserrat", "Helvetica Neue", Helvetica, Arial, "Noto Sans",
+        sans-serif;
+      background: var(--page-bg);
+      /* 좌우 여백을 회색(다크모드는 더 어둡게)으로, 중앙 콘텐츠는 카드처럼 보이게 */
+      color: var(--ink);
+      transition:
+        background 0.2s,
+        color 0.2s;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--ink-deep);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* 키보드 포커스 표시: 버튼/링크/role=button 요소 공통 */
+    button:focus-visible,
+    a:focus-visible,
+    [role="button"]:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline-soft);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-xl);
+    }
+
+    .nav-logo {
+      /* <button> 태그지만 텍스트 링크처럼 보이도록 기본 버튼 스타일 초기화 */
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+      color: var(--ink-deep);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      color: var(--ink);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+      position: relative;
+      /* 아래 밑줄(::after) 위치 기준점 */
+    }
+
+    .nav-links a::after {
+      /* 메뉴 항목 전용 밑줄: 평소엔 옅게, 호버 시 강조색으로 */
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 3px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--steel);
+      /* hairline은 다크모드에서 거의 안 보여서 steel로 변경 */
+    }
+
+    .nav-links a:hover {
+      border-color: var(--hairline);
+      background: var(--surface-soft);
+    }
+
+    .nav-links a:hover::after {
+      background: var(--primary);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-circle);
+      background: var(--surface-soft);
+      border: 1px solid var(--hairline-soft);
+      color: var(--ink-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    body.dark .icon-btn {
+      border-color: rgba(255, 255, 255, 0.3);
+      background: #232428;
+    }
+
+    .hamburger {
+      display: none;
+    }
+
+    #mobile-drawer {
+      position: fixed;
+      inset: 0;
+      top: 64px;
+      z-index: 90;
+      background: var(--canvas);
+      transform: translateX(100%);
+      transition: transform 0.25s ease-out;
+      padding: var(--space-xl);
+    }
+
+    #mobile-drawer.open {
+      transform: translateX(0);
+    }
+
+    #mobile-drawer a {
+      display: block;
+      padding: var(--space-lg) 0;
+      border-bottom: 1px solid var(--hairline-soft);
+      text-decoration: none;
+      color: var(--ink-deep);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    /* ===== 공통 레이아웃 ===== */
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--space-section-lg) var(--space-xl);
+      scroll-margin-top: 80px;
+      background: var(--canvas);
+      /* 좌우 회색 여백과 대비되는 흰색 콘텐츠 컬럼 */
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: var(--space-base);
+    }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.28;
+      margin-bottom: var(--space-xxl);
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 100px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      width: fit-content;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero-title {
+      font-size: 64px;
+      font-weight: 500;
+      line-height: 1.16;
+      margin-bottom: var(--space-base);
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.44;
+      color: var(--charcoal);
+      max-width: 520px;
+      margin-bottom: var(--space-xxl);
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: var(--space-base);
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      border-radius: var(--radius-full);
+      padding: 14px 30px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition:
+        background 0.2s,
+        transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--ink-button-bg);
+      color: var(--ink-button-text);
+    }
+
+    .btn-primary:hover {
+      background: var(--charcoal);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink-deep);
+      border: 2px solid var(--ink-deep);
+      padding: 12px 28px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-soft);
+    }
+
+    .btn-buy-cta {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .btn-buy-cta:hover {
+      background: var(--primary-deep);
+    }
+
+    /* ===== ABOUT ===== */
+    .about-text {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: var(--radius-xxxl);
+      padding: var(--space-xxl);
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: -0.16px;
+      color: var(--ink);
+      margin-bottom: var(--space-xl);
+    }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-base);
+    }
+
+    @media (max-width: 640px) {
+      .edu-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .edu-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+    }
+
+    .edu-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--surface-soft);
+      color: var(--steel);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-base);
+    }
+
+    .edu-badge-active {
+      background: rgba(29, 154, 108, 0.12);
+      color: var(--success);
+    }
+
+    .edu-school {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink-deep);
+      margin-bottom: 4px;
+    }
+
+    .edu-detail {
+      font-size: 14px;
+      color: var(--slate);
+      letter-spacing: -0.14px;
+    }
+
+    /* ===== SKILLS ===== */
+    .skills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-full);
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.14px;
+      color: var(--ink);
+    }
+
+    /* ===== PROJECTS (목록) ===== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-base);
+    }
+
+    .project-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: var(--radius-xxxl);
+      padding: var(--space-xxl);
+      cursor: pointer;
+      transition:
+        border-color 0.2s,
+        transform 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .project-title {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: var(--space-base);
+    }
+
+    .project-desc {
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.14px;
+      color: var(--charcoal);
+      margin-bottom: var(--space-lg);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--primary-soft);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .project-more {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* ===== CERTIFICATES ===== */
+    .awards-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .award-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-base);
+      padding: var(--space-lg) 0;
+      border-bottom: 1px solid var(--hairline-soft);
+    }
+
+    .award-item:last-child {
+      border-bottom: none;
+    }
+
+    .award-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    .award-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-base);
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .award-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink-deep);
+    }
+
+    .badge-pass {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(29, 154, 108, 0.12);
+      color: var(--success);
+      padding: 2px 10px;
+      border-radius: var(--radius-full);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .award-date {
+      font-size: 14px;
+      color: var(--steel);
+      letter-spacing: -0.14px;
+      white-space: nowrap;
+    }
+
+    .award-detail {
+      font-size: 14px;
+      color: var(--slate);
+      letter-spacing: -0.14px;
+    }
+
+    /* ===== CONTACT ===== */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-base);
+      margin-bottom: var(--space-xxl);
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--canvas);
+      border: 1px solid var(--hairline-soft);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      text-decoration: none;
+      transition:
+        border-color 0.2s,
+        transform 0.2s,
+        background 0.2s;
+    }
+
+    .contact-card:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      transform: translateY(-2px);
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-circle);
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 12px;
+      color: var(--steel);
+      margin-bottom: 2px;
+    }
+
+    .contact-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-deep);
+      letter-spacing: -0.16px;
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--canvas);
+      border-top: 1px solid var(--hairline-soft);
+      padding: var(--space-section-sm) var(--space-xl);
+      text-align: center;
+      font-size: 12px;
+      color: var(--stone);
+    }
+
+    /* ============================================================
+     PROJECT DETAIL PAGE (프로젝트 상세)
+     ============================================================ */
+    #detail-view {
+      display: none;
+    }
+
+    .detail-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 24px 80px;
+      background: var(--canvas);
+    }
+
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--steel);
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-bottom: var(--space-xl);
+      padding: 0;
+    }
+
+    .detail-back:hover {
+      color: var(--ink-deep);
+    }
+
+    .detail-header {
+      margin-bottom: var(--space-xxl);
+    }
+
+    .detail-title {
+      font-size: 32px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .detail-period {
+      font-size: 14px;
+      color: var(--steel);
+      margin-bottom: var(--space-base);
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .detail-tag {
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--surface-soft);
+      color: var(--charcoal);
+      border: 1px solid var(--hairline);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+    }
+
+    .detail-section {
+      margin-bottom: var(--space-section-sm);
+      background: var(--surface-soft);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+    }
+
+    .detail-section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: var(--space-base);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-section-title::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .detail-list {
+      padding-left: 18px;
+    }
+
+    .detail-list li {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+
+    .detail-subsection {
+      margin-bottom: var(--space-lg);
+    }
+
+    .detail-subsection-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink-deep);
+      margin-bottom: 8px;
+    }
+
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .screenshot-box {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-lg);
+      background: var(--canvas);
+      border: 1px dashed var(--hairline);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--stone);
+      font-size: 13px;
+      overflow: hidden;
+      text-align: center;
+      padding: var(--space-base);
+    }
+
+    .screenshot-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .retro-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--charcoal);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero-title {
+        font-size: 36px;
+      }
+
+      section {
+        padding: var(--space-section) var(--space-lg);
+      }
+
+      .detail-page {
+        padding: 90px 20px 60px;
+      }
+
+      .detail-title {
+        font-size: 26px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ============================================================
+     NAV : 항상 고정으로 표시됨 (메인 화면이든 상세 화면이든)
+     ============================================================ -->
+  <nav>
+    <button class="nav-logo" onclick="showMainView()">윤우상</button>
+    <ul class="nav-links">
+      <li><a href="#about" onclick="showMainView()">About</a></li>
+      <li><a href="#skills" onclick="showMainView()">Skills</a></li>
+      <li><a href="#projects" onclick="showMainView()">Projects</a></li>
+      <li><a href="#awards" onclick="showMainView()">Awards</a></li>
+      <li><a href="#contact" onclick="showMainView()">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+        🌙
+      </button>
+      <button class="icon-btn hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  <div id="mobile-drawer">
+    <a href="#about" onclick="
+          showMainView();
+          toggleMenu();
+        ">About</a>
+    <a href="#skills" onclick="
+          showMainView();
+          toggleMenu();
+        ">Skills</a>
+    <a href="#projects" onclick="
+          showMainView();
+          toggleMenu();
+        ">Projects</a>
+    <a href="#awards" onclick="
+          showMainView();
+          toggleMenu();
+        ">Awards</a>
+    <a href="#contact" onclick="
+          showMainView();
+          toggleMenu();
+        ">Contact</a>
+  </div>
+
+  <!-- ============================================================
+     MAIN VIEW : 기존 한 페이지 스크롤 구조
+     ============================================================ -->
+  <div id="main-view">
+    <section id="hero">
+      <span class="hero-badge">Portfolio</span>
+      <!-- ✏️ 수정: 이름 -->
+      <h1 class="hero-title">안녕하세요,<br /><span>윤우상</span>입니다.</h1>
+      <!-- ✏️ 수정: 한 줄 소개 -->
+      <p class="hero-sub">모바일과 웹의 경계를 탐구하는 개발자입니다.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
+        <a href="#contact" class="btn btn-secondary">연락하기</a>
+      </div>
+    </section>
+
+    <section id="about">
+      <p class="label">About Me</p>
+      <h2 class="section-title">자기소개</h2>
+      <!-- ✏️ 수정: 자기소개 본문 -->
+      <p class="about-text">
+        경기과학기술대학교 컴퓨터모바일융합과를 졸업하고, 전공심화 과정까지
+        이수하며 모바일과 웹 개발 전반에 걸친 역량을 쌓았습니다. 다양한
+        프로젝트와 자격증 취득 경험을 바탕으로 꾸준히 성장하고 있습니다.
+      </p>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <span class="edu-badge">3년제</span>
+          <div class="edu-school">경기과학기술대학교</div>
+          <div class="edu-detail">
+            컴퓨터모바일융합과 · 졸업 (2018 ~ 2023)
+          </div>
+        </div>
+        <div class="edu-card">
+          <span class="edu-badge">전공심화</span>
+          <div class="edu-school">경기과학기술대학교</div>
+          <div class="edu-detail">
+            컴퓨터모바일융합과 전공심화 · 졸업 (2023 ~ 2024)
+          </div>
+        </div>
+        <div class="edu-card">
+          <span class="edu-badge edu-badge-active">현재 소속중</span>
+          <div class="edu-school">한국폴리텍대학 광명융합기술교육원</div>
+          <div class="edu-detail">하이테크 과정 증강현실과</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <p class="label">Skills</p>
+      <h2 class="section-title">기술 스택</h2>
+      <div class="skills-wrap">
+        <div class="skill-pill"><span>🤖</span>Android Studio</div>
+        <div class="skill-pill"><span>☕</span>Java</div>
+        <div class="skill-pill"><span>🟨</span>JavaScript</div>
+        <div class="skill-pill"><span>⚙️</span>C / C# / C++</div>
+        <div class="skill-pill"><span>⚛️</span>React</div>
+        <div class="skill-pill"><span>🌐</span>HTML5</div>
+        <div class="skill-pill"><span>🗄️</span>MySQL</div>
+        <div class="skill-pill"><span>🐙</span>Git / GitHub</div>
+        <div class="skill-pill"><span>💬</span>Discord Bot</div>
+        <div class="skill-pill"><span>🎮</span>Unity</div>
+        <div class="skill-pill"><span>🕹️</span>Unreal</div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       PROJECTS 목록 : 카드를 클릭(또는 Tab+Enter/Space)하면
+       showProjectDetail('detail-N') 실행
+       ============================================================ -->
+    <section id="projects">
+      <p class="label">Projects</p>
+      <h2 class="section-title">프로젝트</h2>
+
+      <div class="projects-grid">
+        <!-- ✏️ 수정: 프로젝트 1 카드 (상세 페이지는 아래 detail-1 과 연결됨) -->
+        <div class="project-card" role="button" tabindex="0" aria-label="식품 정보 앱 프로젝트 상세보기"
+          onclick="showProjectDetail('detail-1')" onkeydown="handleCardKey(event, 'detail-1')">
+          <p class="project-desc" , style="margin-bottom: 0px">[APP / API]</p>
+          <div class="project-title">식품 정보 앱</div>
+          <p class="project-desc">
+            공공 OpenAPI를 활용해 식품의 영양 성분과 첨가물 정보를 조회할 수
+            있는 앱을 개발했습니다.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Android</span><span class="tag">Java</span><span class="tag">OpenAPI</span>
+          </div>
+          <span class="project-more">자세히 보기 →</span>
+        </div>
+
+        <!-- ✏️ 수정: 프로젝트 2 카드 (detail-2) -->
+        <div class="project-card" role="button" tabindex="0" aria-label="마크다운 SNS 사이트 프로젝트 상세보기"
+          onclick="showProjectDetail('detail-2')" onkeydown="handleCardKey(event, 'detail-2')">
+          <p class="project-desc" , style="margin-bottom: 0px">[Web / SNS]</p>
+          <div class="project-title">마크다운 SNS 사이트</div>
+          <p class="project-desc">
+            ToastUI Editor를 기반으로 마크다운 문법을 이용해 글을 작성하고
+            공유할 수 있는 SNS 사이트를 제작했습니다.
+          </p>
+          <div class="project-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">React</span>
+            <span class="tag">ToastUI</span>
+          </div>
+          <span class="project-more">자세히 보기 →</span>
+        </div>
+
+        <!-- ✏️ 수정: 프로젝트 3 카드 (detail-3) -->
+        <div class="project-card" role="button" tabindex="0" aria-label="Dodge 게임 프로젝트 상세보기"
+          onclick="showProjectDetail('detail-3')" onkeydown="handleCardKey(event, 'detail-3')">
+          <p class="project-desc" , style="margin-bottom: 0px">
+            [Game / Unity]
+          </p>
+          <div class="project-desc" style="font-size: small; margin-bottom: 0px; margin-top: 0px">
+            Dodge 게임
+          </div>
+          <div class="project-title">Block Dodge</div>
+          <p class="project-desc">
+            날아오는 탄환을 피해 생존하는 게임입니다.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Game</span>
+          </div>
+          <span class="project-more">자세히 보기 →</span>
+        </div>
+
+        <!-- ✏️ 수정: 프로젝트 4 카드 (detail-4) -->
+        <div class="project-card" role="button" tabindex="0" aria-label="VR 리듬게임 프로젝트 상세보기"
+          onclick="showProjectDetail('detail-4')" onkeydown="handleCardKey(event, 'detail-4')">
+          <p class="project-desc" , style="margin-bottom: 0px">
+            [Game / Unity / VR]
+          </p>
+          <div class="project-desc" style="margin-bottom: 0px; font-size: small">
+            VR 리듬게임
+          </div>
+          <div class="project-title">VR BeatSaber</div>
+          <p class="project-desc">
+            Beat Saber에서 영감을 받아 제작한 VR 리듬게임입니다.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity</span><span class="tag">VR</span><span class="tag">C#</span>
+          </div>
+          <span class="project-more">자세히 보기 →</span>
+        </div>
+
+        <!-- ✏️ 수정: 프로젝트 5 카드 (detail-5) -->
+        <div class="project-card" role="button" tabindex="0" aria-label="보드게임 AR 가이드 앱 프로젝트 상세보기"
+          onclick="showProjectDetail('detail-5')" onkeydown="handleCardKey(event, 'detail-5')">
+          <p class="project-desc" , style="margin-bottom: 0px">
+            [AR / Virnect Make]
+          </p>
+          <div class="project-title">보드게임 AR 가이드 앱</div>
+          <p class="project-desc">
+            Virnect와의 일경험 프로젝트를 통해 제작한 보드게임 규칙 안내용 AR
+            가이드 앱입니다. 노코딩 제작 프로그램인 Virnect Make를 활용해
+            개발했습니다.
+          </p>
+          <div class="project-tags">
+            <span class="tag">AR</span><span class="tag">Virnect Make</span><span class="tag">No-code</span>
+          </div>
+          <span class="project-more">자세히 보기 →</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="awards">
+      <p class="label">Certificates</p>
+      <h2 class="section-title">자격증</h2>
+      <div class="awards-list">
+        <div class="award-item">
+          <div class="award-dot"></div>
+          <div style="flex: 1">
+            <div class="award-top">
+              <span class="award-name">SQL개발자(SQLD자격)<span class="badge-pass">최종합격</span></span>
+              <span class="award-date">2024.06</span>
+            </div>
+            <div class="award-detail">한국데이터베이스진흥센터</div>
+          </div>
+        </div>
+        <div class="award-item">
+          <div class="award-dot"></div>
+          <div style="flex: 1">
+            <div class="award-top">
+              <span class="award-name">정보기술자격(ITQ) 한글엑셀(한셀) B등급<span class="badge-pass">최종합격</span></span>
+              <span class="award-date">2018.12</span>
+            </div>
+            <div class="award-detail">한국생산성본부</div>
+          </div>
+        </div>
+        <div class="award-item">
+          <div class="award-dot"></div>
+          <div style="flex: 1">
+            <div class="award-top">
+              <span class="award-name">정보기술자격(ITQ) 한글파워포인트(한쇼) A등급<span class="badge-pass">최종합격</span></span>
+              <span class="award-date">2018.12</span>
+            </div>
+            <div class="award-detail">한국생산성본부</div>
+          </div>
+        </div>
+        <div class="award-item">
+          <div class="award-dot"></div>
+          <div style="flex: 1">
+            <div class="award-top">
+              <span class="award-name">1종보통운전면허<span class="badge-pass">최종합격</span></span>
+              <span class="award-date">2017.08</span>
+            </div>
+            <div class="award-detail">경찰청(운전면허시험관리단)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <p class="label">Contact</p>
+      <h2 class="section-title">연락처</h2>
+      <div class="contact-grid">
+        <a class="contact-card" href="mailto:ssaqwe123@gmail.com">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">이메일</div>
+            <div class="contact-value">ssaqwe123@gmail.com</div>
+          </div>
+        </a>
+        <a class="contact-card" href="https://github.com/ssa25879" target="_blank">
+          <div class="contact-icon">🐙</div>
+          <div>
+            <div class="contact-label">GitHub</div>
+            <div class="contact-value">ssa25879</div>
+          </div>
+        </a>
+      </div>
+      <a href="mailto:ssaqwe123@gmail.com" class="btn btn-buy-cta">이메일 보내기</a>
+    </section>
+
+    <footer>© 2025 윤우상. All rights reserved.</footer>
+  </div>
+
+  <!-- ============================================================
+     DETAIL VIEW : 프로젝트 상세 페이지 5개
+     각 project-detail 은 기본적으로 숨겨져 있고, 카드를 클릭하면 하나만 표시됩니다.
+     ============================================================ -->
+  <div id="detail-view">
+    <!-- ✏️ 수정: 프로젝트 1 상세 -->
+    <section class="project-detail detail-page" id="detail-1" style="display: none">
+      <button class="detail-back" onclick="backToProjects()">
+        ← 목록으로
+      </button>
+      <div class="detail-header">
+        <h1 class="detail-title">식품 정보 앱</h1>
+        <p class="detail-period">2022.03 - 2022.10</p>
+        <div class="detail-tags">
+          <span class="detail-tag">Android</span><span class="detail-tag">Java</span><span
+            class="detail-tag">OpenAPI</span><span class="detail-tag">팀 프로젝트</span><span class="detail-tag">팀장</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">기획 의도</h2>
+        <ul class="detail-list">
+          <li>
+            다이어트를 할 때 음식 이름만으로 간단하게 칼로리 섭취량을 계산하고
+            조절할 수 있는 앱이 있으면 좋겠다는 생각에서 기획했습니다.
+          </li>
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">
+            1. 팀장으로서의 역할 및 기여
+          </div>
+          <ul class="detail-list">
+            <li>
+              팀원별 담당 파트를 분배하고, API 연동(Put/Get 등) 작업을
+              관리했습니다.
+            </li>
+            <li>팀원들이 완료한 작업을 취합해 하나의 앱으로 통합했습니다.</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">
+            2. 공공데이터 OpenAPI 연동
+          </div>
+          <ul class="detail-list">
+            <li>
+              공공데이터포털의 OpenAPI를 활용해 식품의 이름·종류에 따른 칼로리
+              등의 영양 정보를 조회하고 화면에 제공하는 기능을 구현했습니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">회고</h2>
+        <p class="retro-text">
+          OpenAPI에서 제공받는 JSON 데이터 중 기본적인 Put/Get 방식 외에 다른
+          방식으로 데이터를 받아와야 하는 경우가 있어, 이를 해결하는 과정에서
+          어려움을 겪었습니다. 이 과정을 통해 다양한 API 응답 구조를 다루는
+          방법을 익힐 수 있었습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- ✏️ 수정: 프로젝트 2 상세 -->
+    <section class="project-detail detail-page" id="detail-2" style="display: none">
+      <button class="detail-back" onclick="backToProjects()">
+        ← 목록으로
+      </button>
+      <div class="detail-header">
+        <h1 class="detail-title">마크다운 SNS 사이트</h1>
+        <p class="detail-period">2023.04 - 2023.09</p>
+        <div class="detail-tags">
+          <span class="detail-tag">ToastUI</span><span class="detail-tag">JavaScript</span><span
+            class="detail-tag">React</span><span class="detail-tag">팀 프로젝트</span><span class="detail-tag">팀원</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">기획 의도</h2>
+        <ul class="detail-list">
+          <li>
+            당시 마크다운을 지원하는 SNS가 없거나 적었고, 실제 SNS 이용 시
+            이미지를 올리면 게시글 하단부에만 이미지가 노출되는 점을
+            개선하고자 기획했습니다.
+          </li>
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">
+            1. 마크다운 에디터 도입 (Toast UI Editor)
+          </div>
+          <ul class="detail-list">
+            <li>
+              마크다운이 적용되는 에디터가 필요해, NHN에서 MIT 라이선스로
+              공개한 Toast UI Editor를 찾아 적용했습니다.
+            </li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">2. DB 설계 및 전환</div>
+          <ul class="detail-list">
+            <li>
+              팀원이 구성한 DB를 MySQL로 변환해 적용했으나, 이후 서버 관리의
+              용이성을 높이기 위해 MS-SQL로 다시 수정해 적용했습니다.
+            </li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">3. UI 구성 및 제작</div>
+          <ul class="detail-list">
+            <li>
+              다른 SNS 서비스의 UI를 참고하여 화면을 구성하고 제작했습니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">회고</h2>
+        <p class="retro-text">
+          최초 기획했던 MySQL 기반 DB 구성을 비용 등의 문제로 MS-SQL로
+          전환하는 과정에서, 기존과 다른 문법과 의미 차이로 인해 수정하는 데
+          어려움을 느꼈습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- ✏️ 수정: 프로젝트 3 상세 -->
+    <section class="project-detail detail-page" id="detail-3" style="display: none">
+      <button class="detail-back" onclick="backToProjects()">
+        ← 목록으로
+      </button>
+      <div class="detail-header">
+        <h1 class="detail-title">Dodge 게임 [Block Dodge]</h1>
+        <p class="detail-period">2026.04 - 2026.06</p>
+        <div class="detail-tags">
+          <span class="detail-tag">Unity</span><span class="detail-tag">C#</span><span class="detail-tag">3D</span><span
+            class="detail-tag">개인 프로젝트</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">기획 의도</h2>
+        <ul class="detail-list">
+          <li>
+            날아오는 탄환을 피하며 생존하는 게임으로, 기초적인 프로젝트에서
+            회피 효과를 구현하고 싶었고, 구현에 성공했습니다.
+          </li>
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">1. 탄환 회피 시스템</div>
+          <ul class="detail-list">
+            <li>
+              시간이 지날수록 빨라지는 탄환을 피하는 시스템을 구현했습니다.
+              기본적으로 모바일 조이스틱을 통해 캐릭터를 이동시켜 회피합니다.
+            </li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">2. 회피(구르기) 기능</div>
+          <ul class="detail-list">
+            <li>
+              별도의 회피 버튼을 누르면 잠깐의 무적 판정과 함께, 이동 중이던
+              방향(입력이 없다면 정면)으로 회피 기동을 수행합니다.
+            </li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">
+            3. 패배 및 최고 점수 시스템
+          </div>
+          <ul class="detail-list">
+            <li>
+              공격에 3회 피격되면 게임이 종료되며, 최고 점수를 저장해 다시
+              플레이하고 싶은 의욕을 부여합니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 스크린샷</h2>
+        <div class="screenshot-grid">
+          <div class="screenshot-box"><img
+              src="https://github.com/ssa25879/BlockDodge/blob/main/Dodge/Intro.jpg?raw=true" />
+          </div>
+          <div class="screenshot-box"><img
+              src="https://github.com/ssa25879/BlockDodge/blob/main/Dodge/Dodge_01.png?raw=true" />
+          </div>
+          <div class="screenshot-box">
+            <img src="https://github.com/ssa25879/BlockDodge/blob/main/Dodge/Dodge_InGame.jpg?raw=true" />
+          </div>
+          <div class="screenshot-box">
+            <img src="https://github.com/ssa25879/BlockDodge/blob/main/Dodge/Dodge_GameOver.jpg?raw=true" />
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 영상</h2>
+        <a class="detail-link" href="#" target="_blank">🔗 영상 링크</a>
+      </div> -->
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">회고</h2>
+        <p class="retro-text">
+          해당 방식의 플레이, 특히 회피 기능을 구현할 때 쿨타임과 버튼 UI를
+          연동하는 과정에서 어려움을 느껴 구현에 어려움을 겪었습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- ✏️ 수정: 프로젝트 4 상세 -->
+    <section class="project-detail detail-page" id="detail-4" style="display: none">
+      <button class="detail-back" onclick="backToProjects()">
+        ← 목록으로
+      </button>
+      <div class="detail-header">
+        <h1 class="detail-title">VR 리듬게임</h1>
+        <p class="detail-period">2026.05 - 2026.07</p>
+        <div class="detail-tags">
+          <span class="detail-tag">Unity</span><span class="detail-tag">VR</span><span class="detail-tag">C#</span><span
+            class="detail-tag">개인 프로젝트</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">기획 의도</h2>
+        <ul class="detail-list">
+          <li>
+            현재 VR 게임 중 가장 유명하고 완성도 높은 게임인 비트세이버(Beat
+            Saber)를 직접 제작해보고 싶다는 의도로 제작했습니다.
+          </li>
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">1. Saber 판정 시스템</div>
+          <ul class="detail-list">
+            <li>
+              VR 컨트롤러에 판정을 위한 Saber 오브젝트를 배치하고, 휘둘러지는
+              방향과 각도를 인식해 Hit / Good / Miss 판정을 부여했습니다.
+            </li>
+            <li>
+              만점 100,000점을 목표로 노트를 처리하는 구조로 설계했습니다.
+            </li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">2. Combo / HP 상호작용</div>
+          <ul class="detail-list">
+            <li>
+              판정 성공·실패 여부에 따라 Combo 처리와 HP 처리 등의 상호작용을
+              구성했습니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 스크린샷</h2>
+        <div class="screenshot-grid">
+          <div class="screenshot-box"><img
+              src="https://github.com/ssa25879/VRRhythmGame/blob/main/VR/01_song_selection_retrowave_orange.png?raw=true" />
+          </div>
+          <div class="screenshot-box"><img
+              src="https://github.com/ssa25879/VRRhythmGame/blob/main/VR/02_gameplay_hit_effect.png?raw=true" />
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 영상</h2>
+        <a class="detail-link" href="https://youtu.be/1m5YNTJQpFM" target="_blank">🔗 영상 링크</a>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">회고</h2>
+        <p class="retro-text">
+          기존에 VR 게임을 접해본 경험이 적어, VR 게임을 구성할 때 필수적으로
+          적용해야 하는 요소들을 알게 되는 계기가 되었습니다. 또한 Meta Quest
+          3S 기종을 기반으로 제작하며 해당 기기의 다양한 사용법을 익힐 수
+          있었습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- ✏️ 수정: 프로젝트 5 상세 -->
+    <section class="project-detail detail-page" id="detail-5" style="display: none">
+      <button class="detail-back" onclick="backToProjects()">
+        ← 목록으로
+      </button>
+      <div class="detail-header">
+        <h1 class="detail-title">보드게임 AR 가이드 앱</h1>
+        <p class="detail-period">2026.05.18. - 2026.07.12. (8주)</p>
+        <div class="detail-tags">
+          <span class="detail-tag">AR</span><span class="detail-tag">Virnect Make</span><span
+            class="detail-tag">No-code</span><span class="detail-tag">일경험 프로젝트</span><span class="detail-tag">팀
+            프로젝트</span><span class="detail-tag">팀장</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">기획 의도</h2>
+        <ul class="detail-list">
+          <li>
+            기존 보드게임 설명서는 텍스트 중심으로 구성되어 있어 초보자가
+            보드게임을 이해하는 데 시간이 오래 걸립니다. AR 기술을 활용해
+            복잡한 규칙과 구성품 정보를 시청각적으로 제공함으로써 사용자의
+            학습 부담을 줄이고자 기획했습니다.
+          </li>
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">
+            1. 팀장으로서의 역할 및 기여
+          </div>
+          <ul class="detail-list">
+            <li>
+              전체 일정 관리, 프로젝트 방향 설정, 지원금 사용 관리, 기능
+              구현을 총괄했습니다.
+            </li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">2. 콘텐츠 구조 설계</div>
+          <ul class="detail-list">
+            <li>
+              메인 화면과 선택 화면을 거쳐 사용자가 원하는 안내 콘텐츠를
+              확인할 수 있도록 구성했습니다.
+            </li>
+            <li>
+              선택지를 제공해 초보자가 규칙과 진행 흐름을 쉽게 이해할 수
+              있도록 지원했습니다.
+            </li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">3. TTS 음성 안내</div>
+          <ul class="detail-list">
+            <li>
+              TTS 음성 안내를 통해 사용자가 설명을 귀로 듣고 이해할 수 있도록
+              구성했습니다.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 스크린샷</h2>
+        <div class="screenshot-grid">
+          <div class="screenshot-box">
+            <iframe src="https://drive.google.com/file/d/1l4KjZcEBIbafFBl0NhQgNqeVZxSqO049/preview" width="640"
+              height="480"></iframe>
+          </div>
+          <div class="screenshot-box">
+            <iframe src="https://drive.google.com/file/d/1vA0nqPWnWJTOhXXrWJW6W5yUDqahJizU/preview" width="640"
+              height="480"></iframe>
+          </div>
+          <div class="screenshot-box">
+            <iframe src="https://drive.google.com/file/d/1XG4FZa2xajKL8ShihYshEQnJySz0nWie/preview" width="640"
+              height="480"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 영상</h2>
+        <a class="detail-link" href="https://youtu.be/OPElYhlrmv8" target="_blank">🔗 영상 링크</a>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">회고</h2>
+        <p class="retro-text">
+          팀원 전원이 처음 사용해보는 툴로 협업을 총괄하다 보니 기능 구현
+          부분을 분배하는 데 어려움을 느꼈습니다. 문제를 한 사람이
+          해결하기보다 팀원들과 함께 테스트하고 의견을 나누며 해결하는 협업
+          방식의 중요성을 배웠습니다.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    /**
+     * 다크모드 ↔ 라이트모드 전환.
+     */
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      document.getElementById("theme-toggle").textContent =
+        document.body.classList.contains("dark") ? "☀️" : "🌙";
+    }
+
+    /**
+     * 모바일 햄버거 메뉴 열기/닫기.
+     */
+    function toggleMenu() {
+      document.getElementById("mobile-drawer").classList.toggle("open");
+    }
+
+    /**
+     * 프로젝트 카드를 클릭(또는 Enter/Space)하면 실행됨.
+     * 메인 화면을 숨기고, 클릭한 프로젝트의 상세 섹션만 보여줌.
+     * @param {string} id - 상세 섹션의 id (예: 'detail-1')
+     * 실제 상세 화면을 표시하는 함수임.
+     */
+    function showProjectDetail(id) {
+      renderProjectDetail(id);
+
+      history.pushState(
+        { view: "detail", projectId: id },
+        "",
+        `#${id}`
+      );
+    }
+
+    /* 프로젝트 카드를 클릭했을 시 작동 */
+    function renderProjectDetail(id) {
+      const mainView = document.getElementById("main-view");
+      const detailView = document.getElementById("detail-view");
+      const selectedDetail = document.getElementById(id);
+
+      if (!selectedDetail) return;
+
+      mainView.style.display = "none";
+      detailView.style.display = "block";
+
+      document.querySelectorAll(".project-detail").forEach((element) => {
+        element.style.display = "none";
+      });
+
+      selectedDetail.style.display = "block";
+      window.scrollTo(0, 0);
+    }
+
+    /**
+     * 포트폴리오의 첫 화면을 호춣하는 함수
+     */
+    function renderProjectList() {
+      const mainView = document.getElementById("main-view");
+      const detailView = document.getElementById("detail-view");
+
+      detailView.style.display = "none";
+      mainView.style.display = "block";
+
+      document.querySelectorAll(".project-detail").forEach((element) => {
+        element.style.display = "none";
+      });
+
+      requestAnimationFrame(() => {
+        document.getElementById("projects")?.scrollIntoView({
+          behavior: "auto",
+          block: "start"
+        });
+      });
+    }
+
+
+
+    /**
+     * ♿ 프로젝트 카드(role="button")의 키보드 접근성 처리.
+     * div는 기본적으로 Enter/Space에 반응하지 않으므로 직접 처리해줌.
+     * @param {KeyboardEvent} e
+     * @param {string} id - 상세 섹션의 id
+     */
+    function handleCardKey(e, id) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault(); // Space가 페이지를 스크롤시키는 기본 동작 방지
+        showProjectDetail(id);
+      }
+    }
+
+    /**
+     * 상세 화면을 숨기고 메인 화면(한 페이지 스크롤)을 다시 보여줌.
+     */
+    function showMainView() {
+      document.getElementById("detail-view").style.display = "none";
+      document.getElementById("main-view").style.display = "block";
+    }
+
+    /**
+     * 목록으로 이동시키는 함수 
+     */
+    function showProjectList() {
+      showMainView();
+
+      document.getElementById("projects").scrollIntoView({
+        behavior: "instant"
+      });
+    }
+
+    /**
+     * 브라우저 뒤로가기와 앞으로가기 감지하여 목록으로 이동
+     */
+    window.addEventListener("popstate", (event) => {
+      if (event.state?.view === "detail" && event.state?.projectId) {
+        renderProjectDetail(event.state.projectId);
+      } else {
+        showMainView();
+      }
+    });
+
+    /**
+     * 상세 페이지의 "← 목록으로" 버튼 전용.
+     * 메인 화면으로 돌아간 뒤 Projects 섹션 위치로 스크롤.
+     */
+    function backToProjects() {
+      if (history.state?.view === "detail") {
+        history.back();
+      } else {
+        showProjectList();
+      }
+    }
+  </script>
+</body>
+
+</html>
