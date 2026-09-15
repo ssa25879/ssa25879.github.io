@@ -1,28 +1,38 @@
-function ProjectCard( { category, title, description, tags, detailId: id, ariaLabel } ) {
+function ProjectCard({project, onSelect}) {
     return (
         <div className="project-card"
              role="button"
-             tabIndex="0"
-             aria-label={ ariaLabel }
-             onClick={() => showProjectDetail(id)}
+             tabIndex={0}
+             aria-label={`${project.title} 프로젝트 상세보기`}
+             onClick={() => onSelect(project.id)}
              onKeyDown={
                  (event) => {
                      if (event.key === 'Enter' || event.key === ' ') {
                          event.preventDefault()
-                         onselect(id)
+                         onSelect(project.id)
                      }
                  }
              }>
             <p className="project-desc"
-               style={ { marginBottom: 0} }>[APP / API]</p>
-            <div className="project-title">식품 정보 앱</div>
+               style={{marginBottom: 0}}>{project.category}</p>
+            {
+                project.subtitle && (
+                    <div className="project-desc" style={{marginBottom: 0, marginTop: 0, fontSize: 'small'}}>
+                        {project.subtitle}
+                    </div>
+                )
+            }
+            
+            <div className="project-title">{project.title}</div>
             <p className="project-desc">
-                공공 OpenAPI를 활용해 식품의 영양 성분과 첨가물 정보를 조회할 수 있는 앱을 개발했습니다.
+                {project.description}
             </p>
             <div className="project-tags">
-                <span className="tag">Android</span>
-                <span className="tag">Java</span>
-                <span className="tag">OpenAPI</span>
+                {project.tags.map((tag) => (
+                    <span className="tag" key={tag}>
+                        {tag}
+                    </span>
+                ))}
             </div>
             <span className="project-more">자세히 보기 →</span>
         </div>
