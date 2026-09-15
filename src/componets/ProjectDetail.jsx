@@ -1,10 +1,13 @@
+import {Link} from "react-router";
+
 function ProjectDetail({project}) {
     const detail = project.detail
     
     return (
         <section className="project-detail detail-page">
+            <Link className="detail-back" to="/">목록으로</Link>
             <div className="detail-header">
-                <h1 className="detail-title">{project.title}</h1>
+                <h1 className="detail-title">{detail.title ?? project.title}</h1>
                 <p className="detail-period">{detail.period}</p>
                 
                 <div className="detail-tags">
@@ -42,6 +45,71 @@ function ProjectDetail({project}) {
                     ))
                 }
             </div>
+
+            {/* github 이미지 주소 */
+                detail.screenshots?.length > 0 && (
+                <div className="detail-section">
+                    <h2 className="detail-section-title">
+                        프로젝트 스크린샷
+                    </h2>
+
+                    <div className="screenshot-grid">
+                        {detail.screenshots.map((screenshot) => (
+                            <div
+                                className="screenshot-box"
+                                key={screenshot.src}
+                            >
+                                <img
+                                    src={screenshot.src}
+                                    alt={screenshot.alt}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* iframe */
+                detail.previews?.length > 0 && (
+                <div className="detail-section">
+                    <h2 className="detail-section-title">
+                        프로젝트 스크린샷
+                    </h2>
+
+                    <div className="screenshot-grid">
+                        {detail.previews.map((preview) => (
+                            <div
+                                className="screenshot-box"
+                                key={preview.src}
+                            >
+                                <iframe
+                                    src={preview.src}
+                                    title={preview.title}
+                                    width="640"
+                                    height="480"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {detail.videoUrl && (
+                <div className="detail-section">
+                    <h2 className="detail-section-title">
+                        프로젝트 영상
+                    </h2>
+
+                    <a
+                        className="detail-link"
+                        href={detail.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        🔗 영상 링크
+                    </a>
+                </div>
+            )}
             
             <div className="detail-section">
                 <h2 className="detail-section-title">회고</h2>

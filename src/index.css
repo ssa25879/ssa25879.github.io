@@ -467,6 +467,7 @@ section {
   transition:
           border-color 0.2s,
           transform 0.2s;
+  text-decoration: none;
 }
 
 .project-card:hover {

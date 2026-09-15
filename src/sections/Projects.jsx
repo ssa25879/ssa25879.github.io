@@ -2,10 +2,6 @@ import ProjectCard from '../componets/ProjectCard.jsx'
 import projects from "../data/projects.js";
 
 function Projects() {
-    function handleProjectSelect(projectId) {
-        console.log("선택 프로젝트 확인", projectId)
-    }
-
     return (
         <section id="projects">
             <p className="label">Projects</p>
@@ -15,7 +11,6 @@ function Projects() {
                     <ProjectCard
                         key={project.id}
                         project={project}
-                        onSelect={handleProjectSelect}
                     />
                 ))}
 

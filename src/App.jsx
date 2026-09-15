@@ -3,24 +3,35 @@ import Navbar from './componets/Navbar'
 import Hero from "./sections/Hero.jsx";
 import About from "./sections/About.jsx";
 import Skills from "./sections/Skills.jsx";
-import ProjectDetail from "./componets/ProjectDetail.jsx";
 import Projects from "./sections/Projects.jsx";
-import projects from "./data/projects.js";
+import {Link, Route, Routes} from "react-router";
+import ProjectDetailPage from "./pages/ProjectDetailPage.jsx";
 
 function App() {
-    const foodProject = projects.find(
-        (project) => project.id === 'food-info-app'
-    )
-    
     return (
-        <>  
-            <Navbar />
-            <Hero />
-            <About />
-            <Skills />
-            <Projects />
-            <ProjectDetail project={foodProject}/>
-        </>
+        <Routes>
+            <Route path="/" element={
+                <>
+                    <Navbar/>
+                    <Hero/>
+                    <About/>
+                    <Skills/>
+                    <Projects/>
+                </>
+            }/>
+            
+            <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
+            
+            <Route path = "*" element = {
+                <section className="detail-page">
+                    <p>페이지를 찾을 수 없습니다.</p>
+                    <Link to="/">메인으로 가기</Link>
+                </section>
+            }/>
+
+
+        </Routes>
+
     )
 }
 
