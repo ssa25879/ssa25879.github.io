@@ -33,6 +33,11 @@ const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function navigate(url) {
   await page.goto(url, {waitUntil: 'load'});
 }
+async function compareLegacyPage(url) {
+  await navigate(url);
+  // Added projects intentionally change the grid height; compare the preserved content separately.
+  await evaluate(`document.querySelectorAll('[data-project-id="detail-6"], [data-project-id="detail-7"], #detail-6, #detail-7').forEach(el => el.remove())`);
+}
 // A missing style rule, changed content, or broken breakpoint changes these observations.
 const snapshot = `(() => [...document.body.querySelectorAll('*')]
   .filter(el => !['SCRIPT', 'STYLE'].includes(el.tagName))
@@ -57,7 +62,7 @@ const snapshot = `(() => [...document.body.querySelectorAll('*')]
     await page.setViewportSize({ width, height: 900 });
     await navigate(base + '/original.html');
     const before = await evaluate(snapshot);
-    await navigate(base + '/index.html');
+    await compareLegacyPage(base + '/index.html');
     assert.deepEqual(await evaluate(snapshot), before, `Initial content/layout changed at ${width}px`);
     console.log(`PASS original content and layout: ${width}px`);
     await evaluate(`document.querySelector('#theme-toggle').click()`);
@@ -69,12 +74,31 @@ const snapshot = `(() => [...document.body.querySelectorAll('*')]
       await navigate(base + '/original.html');
       await evaluate(`document.querySelectorAll('.project-card')[${id - 1}].click()`);
       const detailBefore = await evaluate(snapshot);
-      await navigate(base + '/index.html');
+      await compareLegacyPage(base + '/index.html');
       await evaluate(`document.querySelectorAll('.project-card')[${id - 1}].click()`);
       assert.deepEqual(await evaluate(snapshot), detailBefore, `Detail ${id} changed at ${width}px`);
     }
     console.log(`PASS dark theme and five detail layouts: ${width}px`);
   }
+  await navigate(base + '/index.html');
+  const projectIds = await evaluate(`[...document.querySelectorAll('[data-project-id]')].map(el => el.dataset.projectId)`);
+  assert.deepEqual(projectIds, ['detail-1', 'detail-2', 'detail-3', 'detail-4', 'detail-5', 'detail-6', 'detail-7'],
+    'Both requested projects must be available from the project list');
+  assert.deepEqual(await evaluate(`[...document.querySelectorAll('#detail-6 .detail-link, #detail-7 .detail-link')].map(el => el.href)`),
+    ['https://github.com/ssa25879/UsingAI-ImageSearchApp', 'https://github.com/ssa25879/URP_ZombieGame/tree/SideProject']);
+  for (const width of [1280, 768, 480, 375]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const projectId of ['detail-6', 'detail-7']) {
+      await page.locator(`[data-project-id="${projectId}"]`).click();
+      assert.equal(await evaluate(`document.documentElement.scrollWidth <= innerWidth`), true, `Detail overflow at ${width}px`);
+      assert.equal(await evaluate(`document.querySelector('#${projectId}').getBoundingClientRect().width > 0`), true);
+      await page.locator('.nav-logo').click();
+      assert.equal(await evaluate(`document.querySelector('#${projectId}').getBoundingClientRect().height`), 0,
+        'Returning to main must hide the new detail');
+    }
+  }
+  console.log('PASS new detail links, responsive width and main-view return');
+  // Runtime view transitions set display styles; inspect the authored markup on a fresh load.
   await navigate(base + '/index.html');
   assert.equal(await evaluate(`!!document.querySelector('script[src]') && !document.querySelector('[onclick], [onkeydown], [style], style, script:not([src])')`), true,
     'The site must load external features without inline code/styles');
@@ -86,21 +110,21 @@ const snapshot = `(() => [...document.body.querySelectorAll('*')]
   assert.equal(await evaluate(`document.querySelector('#mobile-drawer').classList.contains('open')`), true);
   await evaluate(`document.querySelector('#mobile-drawer a').click()`);
   assert.equal(await evaluate(`document.querySelector('#mobile-drawer').classList.contains('open')`), false);
-  for (let id = 1; id <= 5; id++) {
-    await evaluate(`document.querySelector('[data-project-id="detail-${id}"]').click()`);
+  for (const projectId of projectIds) {
+    await evaluate(`document.querySelector('[data-project-id="${projectId}"]').click()`);
     assert.deepEqual(await evaluate(`[getComputedStyle(document.querySelector('#main-view')).display, [...document.querySelectorAll('.project-detail')].filter(el => getComputedStyle(el).display !== 'none').map(el => el.id), location.hash]`),
-      ['none', [`detail-${id}`], `#detail-${id}`]);
-    await evaluate(`document.querySelector('#detail-${id} .detail-back').click()`);
+      ['none', [projectId], `#${projectId}`]);
+    await evaluate(`document.querySelector('#${projectId} .detail-back').click()`);
     await pause(150);
     assert.equal(await evaluate(`getComputedStyle(document.querySelector('#main-view')).display`), 'block');
     await evaluate('history.forward()'); await pause(150);
-    assert.equal(await evaluate(`getComputedStyle(document.querySelector('#detail-${id}')).display`), 'block');
+    assert.equal(await evaluate(`getComputedStyle(document.querySelector('#${projectId}')).display`), 'block');
     await evaluate('history.back()'); await pause(150);
   }
-  for (const key of ['Enter', ' ']) {
-    await page.locator('[data-project-id="detail-1"]').focus();
+  for (const [key, projectId] of [['Enter', 'detail-6'], [' ', 'detail-7']]) {
+    await page.locator(`[data-project-id="${projectId}"]`).focus();
     await page.keyboard.press(key === ' ' ? 'Space' : key);
-    assert.equal(await evaluate(`getComputedStyle(document.querySelector('#detail-1')).display`), 'block');
+    assert.equal(await evaluate(`getComputedStyle(document.querySelector('#${projectId}')).display`), 'block');
     await evaluate(`document.querySelector('.nav-logo').click()`);
     assert.equal(await evaluate(`getComputedStyle(document.querySelector('#main-view')).display`), 'block');
   }
@@ -109,12 +133,12 @@ const snapshot = `(() => [...document.body.querySelectorAll('*')]
   assert.equal(await evaluate('location.hash'), hash, 'Invalid project must not change the URL');
   assert.equal(await evaluate(`getComputedStyle(document.querySelector('#main-view')).display`), 'block');
   assert.deepEqual(errors, [], 'Browser runtime errors');
-  console.log('PASS theme, mobile menu, five details, keyboard, history, navigation and invalid references');
+  console.log('PASS theme, mobile menu, seven details, keyboard, history, navigation and invalid references');
   await page.unroute('**/*');
   await page.route('https://**/*', route => route.abort());
   await navigate(require('node:url').pathToFileURL(path.join(root, 'index.html')).href);
-  await page.locator('[data-project-id="detail-1"]').click();
-  assert.equal(await evaluate(`getComputedStyle(document.querySelector('#detail-1')).display`), 'block');
+  await page.locator('[data-project-id="detail-7"]').click();
+  assert.equal(await evaluate(`getComputedStyle(document.querySelector('#detail-7')).display`), 'block');
   await page.locator('#theme-toggle').click();
   assert.equal(await evaluate(`document.body.classList.contains('dark')`), true);
   assert.deepEqual(errors, [], 'Browser runtime errors when opened as a local file');

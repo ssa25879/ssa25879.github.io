@@ -3,13 +3,19 @@
 - 요청: ssa25879/ssa25879.github.io의 순수 HTML 사이트를 기능별 파일로 분리.
 - 작업 폴더: D:\포폴사이트수정
 - main 브랜치 클론 완료. 원본 기준 커밋: 85969cb02da408318b9e85a664d7edae157ee2d4.
-- 현재 사이트: index.html에 CSS, HTML, JavaScript가 통합됨. 프로젝트 상세 5개.
+- 현재 사이트: HTML 콘텐츠와 CSS 6개·JS 4개를 분리한 구조. 프로젝트 카드·상세 7개.
 - 설계서: docs/superpowers/specs/2026-10-04-portfolio-architecture-design.md
 - 완료: 설계, 구현 계획, CSS 6개·JS 4개 기능 분리, 인라인 이벤트·스타일 제거, README 수정.
 - 핵심 경로: index.html, assets/css/, assets/js/, tests/verify.cjs.
 - 검증: JavaScript 구문 검사 통과. 실제 브라우저에서 1280·768·480·375px의 메인·다크 테마·상세 5개 주요 스타일/배치가 원본과 일치. 테마·메뉴·카드·Enter/Space·목록 복귀·뒤로/앞으로·잘못된 ID 검사 통과.
 - 로컬 HTML 직접 실행 및 독립 검토 통과. 수정이 필요한 회귀 문제 없음.
 - 외부 미디어는 검증 중 차단했으므로 실제 접근 가능 여부는 미검증.
-- 후속: 원격 반영·배포가 필요하면 별도 요청에 따라 수행. 기존 상세 URL 새로고침 동작과 테마 미저장 동작은 유지.
+- 기능 분리 커밋 7f5de3a는 사용자 요청에 따라 원격 main에 푸시 완료. GitHub Pages 배포 완료 여부는 미검증.
+- 추가 작업: 원격 저장소를 복제하지 않고 UsingAI-ImageSearchApp과 URP_ZombieGame/SideProject의 카드·상세를 추가함.
+- 내용 근거: UsingAI-ImageSearchApp/main의 README.md·diagram.puml·SearchScreenPresenter.cs, URP_ZombieGame/SideProject의 PlayerShooter.cs·ZombieSpawner.cs·GameManager.cs·ThreatMinimap.cs·ReloadIndicator.cs·GameSettingsKit/README.md.
+- 이미지 검색 저장소는 Unity 앱이므로 웹앱으로 표기하지 않음. 기간·스크린샷·영상·개인 회고는 임의로 추가하지 않음.
+- 새 카드 검증: 기존 5개 화면의 원본 비교와 전체 7개 전환·History API 통과. 새 카드의 실제 Enter/Space 입력, 네 가지 너비에서 가로 넘침·메인 복귀, 원격 저장소 링크, 로컬 파일 실행 통과. JS 구문·diff 검사 통과.
+- 독립 검토: 새 HTML 구조·연결·원격 근거와 브라우저 재실행 통과. 최초 검토 실행의 ERR_UNSAFE_PORT는 임의 포트가 브라우저 제한 포트로 배정된 환경 문제이며 재실행은 통과함.
+- 후속: 새 카드의 원격 반영이 필요하면 별도 요청에 따라 푸시. 기존 상세 URL 새로고침 동작과 테마 미저장 동작은 유지.
 - D:\Codex 작업 로그는 사용자 요청에 따라 작성하지 않음.
-- 원격 반영과 배포는 수행하지 않음.
+- 새 카드의 원격 반영·배포는 아직 수행하지 않음.

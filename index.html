@@ -205,6 +205,38 @@
           </div>
           <span class="project-more">자세히 보기 →</span>
         </div>
+        <!-- ✏️ 수정: 프로젝트 6 카드 (detail-6) -->
+        <div class="project-card" role="button" tabindex="0" aria-label="이미지 검색 앱 프로젝트 상세보기"
+          data-project-id="detail-6">
+          <p class="project-desc project-kind">[App / UI / API]</p>
+          <div class="project-title">이미지 검색 앱</div>
+          <p class="project-desc">
+            Unity UI Toolkit으로 검색 화면을 구성하고, Pixabay API 검색과
+            비동기 썸네일 로딩을 연결한 이미지 검색 앱입니다.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">UI Toolkit</span>
+            <span class="tag">UniTask</span><span class="tag">Pixabay API</span>
+          </div>
+          <span class="project-more">자세히 보기 →</span>
+        </div>
+
+        <!-- ✏️ 수정: 프로젝트 7 카드 (detail-7) -->
+        <div class="project-card" role="button" tabindex="0" aria-label="Urban Survival 프로젝트 상세보기"
+          data-project-id="detail-7">
+          <p class="project-desc project-kind">[Game / Unity / PC]</p>
+          <div class="project-desc project-subtitle">URP_ZombieGame · SideProject</div>
+          <div class="project-title">Urban Survival</div>
+          <p class="project-desc">
+            네 종류의 무기와 좀비 웨이브, 보스 전투를 구현한 탑뷰 생존 게임입니다.
+            전투 HUD와 설정 기능을 함께 개발하고 있습니다.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Unity 6</span><span class="tag">C#</span><span class="tag">URP</span>
+            <span class="tag">NavMesh</span><span class="tag">uGUI</span>
+          </div>
+          <span class="project-more">자세히 보기 →</span>
+        </div>
       </div>
     </section>
 
@@ -281,7 +313,7 @@
   </div>
 
   <!-- ============================================================
-     DETAIL VIEW : 프로젝트 상세 페이지 5개
+     DETAIL VIEW : 프로젝트 상세 페이지 7개
      각 project-detail 은 기본적으로 숨겨져 있고, 카드를 클릭하면 하나만 표시됩니다.
      ============================================================ -->
   <div id="detail-view">
@@ -677,6 +709,138 @@
         </p>
       </div>
     </section>
+    <!-- ✏️ 수정: 프로젝트 6 상세 -->
+    <section class="project-detail detail-page" id="detail-6">
+      <button class="detail-back" data-back-to-projects>← 목록으로</button>
+      <div class="detail-header">
+        <h1 class="detail-title">이미지 검색 앱</h1>
+        <p class="detail-period">UsingAI-ImageSearchApp · Unity 기반 앱 개발</p>
+        <div class="detail-tags">
+          <span class="detail-tag">Unity 6</span><span class="detail-tag">C#</span>
+          <span class="detail-tag">UI Toolkit</span><span class="detail-tag">UniTask</span>
+          <span class="detail-tag">Pixabay API</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개요</h2>
+        <p class="retro-text">
+          검색어로 이미지를 찾고 결과와 썸네일을 확인할 수 있는 세로형 앱입니다.
+          UI Toolkit으로 화면을 구성하고, 검색과 썸네일 로딩을 별도의 Repository 인터페이스로 연결했습니다.
+        </p>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">1. 검색 화면과 상태 처리</div>
+          <ul class="detail-list">
+            <li>검색 중, 검색 결과, 빈 결과, 오류 상태를 구분해 화면에 표시했습니다.</li>
+            <li>썸네일을 비동기로 로딩하고, 개별 이미지 로딩 실패는 해당 카드의 대체 표시로 처리했습니다.</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">2. 레이어 분리와 API 연결</div>
+          <ul class="detail-list">
+            <li>Presentation·Domain·Data·Core와 Composition Root로 역할을 나누고, 화면이 API 구현에 직접 의존하지 않도록 구성했습니다.</li>
+            <li>Pixabay 검색과 썸네일 HTTP 요청을 Repository 인터페이스에 연결하고, 네트워크 오류를 화면에서 사용할 결과 타입으로 변환했습니다.</li>
+            <li>실제 API와 Mock 구현을 교체할 수 있게 구성해 성공·빈 결과·연결 실패·서버 오류 흐름을 확인할 수 있도록 했습니다.</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">3. 요청 취소와 응답 순서 관리</div>
+          <ul class="detail-list">
+            <li>새 검색이 시작되면 이전 검색과 썸네일 작업을 취소하고, 요청 세대를 비교해 오래된 응답이 최신 결과를 덮어쓰지 않도록 했습니다.</li>
+            <li>화면 종료 시 진행 중인 작업을 취소하고, 검색 결과에 사용한 텍스처의 수명을 관리했습니다.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">기술적 포인트</h2>
+        <p class="retro-text">
+          검색 결과가 없는 경우와 네트워크 오류를 구분하고, 검색 요청과 이미지 로딩의 실패 범위를 나눴습니다.
+          실제 API 연동은 Editor 개발 환경에서 사용하며, 모바일 빌드는 현재 Mock 구현을 사용하는 단계입니다.
+        </p>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 저장소</h2>
+        <a class="detail-link" href="https://github.com/ssa25879/UsingAI-ImageSearchApp" target="_blank"
+          rel="noopener noreferrer">🔗 GitHub 저장소</a>
+      </div>
+    </section>
+
+    <!-- ✏️ 수정: 프로젝트 7 상세 -->
+    <section class="project-detail detail-page" id="detail-7">
+      <button class="detail-back" data-back-to-projects>← 목록으로</button>
+      <div class="detail-header">
+        <h1 class="detail-title">Urban Survival</h1>
+        <p class="detail-period">URP_ZombieGame · SideProject · 개발 중</p>
+        <div class="detail-tags">
+          <span class="detail-tag">Unity 6</span><span class="detail-tag">C#</span>
+          <span class="detail-tag">URP</span><span class="detail-tag">NavMesh</span>
+          <span class="detail-tag">uGUI</span><span class="detail-tag">AudioMixer</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개요</h2>
+        <p class="retro-text">
+          도시 전장에서 좀비의 공격을 피하며 생존하는 PC 싱글 플레이 탑뷰 게임입니다.
+          URP_ZombieGame의 SideProject 브랜치에서 전투, 적 생성, HUD와 설정 기능을 확장하고 있습니다.
+        </p>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">1. 무기와 전투 시스템</div>
+          <ul class="detail-list">
+            <li>권총·소총·SMG·산탄총을 네 개의 슬롯으로 관리하고, 획득한 무기를 교체할 수 있도록 구현했습니다.</li>
+            <li>사격·탄약·재장전 상태를 관리하고, 캐릭터 중심선 위 고정 높이를 기준으로 명중을 판정하도록 개선했습니다.</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">2. 웨이브와 생존 진행</div>
+          <ul class="detail-list">
+            <li>시간에 따라 웨이브와 적의 능력치가 증가하도록 구성하고, 일반·강화 적과 보스 등장 흐름을 관리했습니다.</li>
+            <li>플레이어 주변의 NavMesh와 이동 경로를 검증해 스폰 위치를 선택하고, 동시 생성 상한과 대기 중인 적을 관리했습니다.</li>
+            <li>목표 보스 처치 시 결과를 기록하고, 이후 생존을 계속하는 무한 모드 흐름을 연결했습니다.</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">3. 전투 HUD와 위협 미니맵</div>
+          <ul class="detail-list">
+            <li>무기·탄약 정보와 캐릭터 머리 위 재장전 알림·진행 바를 표시했습니다.</li>
+            <li>카메라 방향을 기준으로 주변 적을 표시하고, 탐지 범위 밖의 위협은 가장자리 화살표로 안내했습니다.</li>
+            <li>강화 적의 미니맵 표시를 색상과 크기로 구분하고, 마커를 재사용하도록 구성했습니다.</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <div class="detail-subsection-title">4. 재사용 가능한 설정 모듈</div>
+          <ul class="detail-list">
+            <li>볼륨·전체 화면·해상도·그래픽 품질·VSync 설정을 게임 코드와 분리한 GameSettingsKit 모듈로 구성했습니다.</li>
+            <li>PlayerPrefs로 설정을 저장하고, AudioMixer를 통해 음악과 효과음 볼륨을 분리했습니다.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">기술적 포인트</h2>
+        <p class="retro-text">
+          사격 판정과 총구의 시각적 연출을 분리하고, 카메라 방향과 미니맵 좌표 기준을 일치시켰습니다.
+          전투 중 필요한 상태를 HUD로 전달하면서, 설정 기능은 다른 Unity 프로젝트에서도 사용할 수 있도록 분리했습니다.
+        </p>
+      </div>
+
+      <div class="detail-section">
+        <h2 class="detail-section-title">프로젝트 저장소</h2>
+        <a class="detail-link" href="https://github.com/ssa25879/URP_ZombieGame/tree/SideProject" target="_blank"
+          rel="noopener noreferrer">🔗 GitHub · SideProject</a>
+      </div>
+    </section>
+
   </div>
 
   <script src="assets/js/theme.js" defer></script>

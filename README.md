@@ -33,8 +33,8 @@ tests/verify.cjs            실제 브라우저 동작 및 원본 비교
 프로젝트 추가 순서:
 
 1. `#projects .projects-grid`에 카드 HTML을 추가합니다.
-2. 카드에 `role="button"`, `tabindex="0"`, `aria-label`, `data-project-id="detail-6"`를 지정합니다.
-3. `#detail-view`에 같은 ID의 `<section class="project-detail detail-page" id="detail-6">`를 추가합니다.
+2. 카드에 `role="button"`, `tabindex="0"`, `aria-label`, `data-project-id="detail-8"`를 지정합니다. 현재 프로젝트는 `detail-1`부터 `detail-7`까지 등록되어 있습니다.
+3. `#detail-view`에 같은 ID의 `<section class="project-detail detail-page" id="detail-8">`를 추가합니다.
 4. 상세 목록 복귀 버튼에 `class="detail-back" data-back-to-projects`를 지정합니다.
 
 `data-show-main`은 메인 화면 복귀, `data-close-menu`는 모바일 메뉴 닫기, `data-toggle-menu`와 `data-toggle-theme`는 각각 메뉴·테마 버튼을 연결합니다. 카드와 상세 화면의 ID가 일치하지 않으면 화면과 URL을 변경하지 않습니다.
@@ -65,4 +65,4 @@ $env:NODE_PATH = "$runtimeRoot\node_modules"
 & "$runtimeRoot\bin\node.exe" tests/verify.cjs
 ```
 
-검증은 원본 커밋 `85969cb`와 1280·768·480·375px의 콘텐츠, 주요 computed style, 요소 배치, 다크 테마와 프로젝트 상세 5개를 비교합니다. 테마·메뉴·클릭·Enter/Space·목록 복귀·뒤로/앞으로·잘못된 ID 처리 및 브라우저 JavaScript 예외도 검사합니다. 외부 미디어 요청은 차단하므로 외부 이미지·Google Drive 콘텐츠의 실제 접근 가능 여부는 별도 확인해야 합니다.
+검증은 원본 커밋 `85969cb`와 1280·768·480·375px의 기존 콘텐츠, 주요 computed style, 요소 배치, 다크 테마와 기존 프로젝트 상세 5개를 비교합니다. 기존 영역 비교 시 새 프로젝트 2개는 테스트 페이지에서만 제외합니다. 전체 프로젝트 7개의 화면 전환·목록 복귀·뒤로/앞으로, 새 카드의 Enter/Space·저장소 링크·모바일 너비·메인 복귀와 테마·메뉴·잘못된 ID 처리·로컬 파일 실행·브라우저 JavaScript 예외도 검사합니다. 프로젝트를 추가하면 테스트의 예상 프로젝트 ID 목록도 갱신합니다. 외부 미디어 요청은 차단하므로 외부 이미지·Google Drive 콘텐츠의 실제 접근 가능 여부는 별도 확인해야 합니다.
