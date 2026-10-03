@@ -1,0 +1,150 @@
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline-soft);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-xl);
+}
+
+.nav-logo {
+  /* <button> 태그지만 텍스트 링크처럼 보이도록 기본 버튼 스타일 초기화 */
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  color: var(--ink-deep);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+
+.nav-links a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.14px;
+  color: var(--ink);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  position: relative;
+  /* 아래 밑줄(::after) 위치 기준점 */
+}
+
+.nav-links a::after {
+  /* 메뉴 항목 전용 밑줄: 평소엔 옅게, 호버 시 강조색으로 */
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--steel);
+  /* hairline은 다크모드에서 거의 안 보여서 steel로 변경 */
+}
+
+.nav-links a:hover {
+  border-color: var(--hairline);
+  background: var(--surface-soft);
+}
+
+.nav-links a:hover::after {
+  background: var(--primary);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-circle);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline-soft);
+  color: var(--ink-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+body.dark .icon-btn {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: #232428;
+}
+
+.hamburger {
+  display: none;
+}
+
+#mobile-drawer {
+  position: fixed;
+  inset: 0;
+  top: 64px;
+  z-index: 90;
+  background: var(--canvas);
+  transform: translateX(100%);
+  transition: transform 0.25s ease-out;
+  padding: var(--space-xl);
+}
+
+#mobile-drawer.open {
+  transform: translateX(0);
+}
+
+#mobile-drawer a {
+  display: block;
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--hairline-soft);
+  text-decoration: none;
+  color: var(--ink-deep);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ===== 공통 레이아웃 ===== */
+section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-section-lg) var(--space-xl);
+  scroll-margin-top: 80px;
+  background: var(--canvas);
+  /* 좌우 회색 여백과 대비되는 흰색 콘텐츠 컬럼 */
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: var(--space-base);
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.28;
+  margin-bottom: var(--space-xxl);
+}
