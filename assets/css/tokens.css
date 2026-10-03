@@ -1,0 +1,65 @@
+:root {
+  --primary: #0064e0;
+  --primary-deep: #0143b5;
+  --primary-soft: rgba(0, 100, 224, 0.12);
+  --on-primary: #ffffff;
+
+  --ink-button-bg: #050505;
+  --ink-button-text: #ffffff;
+
+  --canvas: #ffffff;
+  --surface-soft: #f5f5f7;
+  --hairline: #dadce2;
+  --hairline-soft: #eaebef;
+
+  --ink-deep: #050505;
+  --ink: #1c1e21;
+  --charcoal: #4b4f56;
+  --slate: #65676b;
+  --steel: #8a8d91;
+  --stone: #b0b3b8;
+
+  --success: #1d9a6c;
+  --warning: #ffc107;
+  --critical: #e41e3f;
+
+  --radius-sm: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 16px;
+  --radius-xxl: 24px;
+  --radius-xxxl: 32px;
+  --radius-full: 100px;
+  --radius-circle: 50%;
+
+  --space-base: 16px;
+  --space-lg: 20px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+  --space-section-sm: 48px;
+  --space-section: 64px;
+  --space-section-lg: 80px;
+
+  --page-bg: var(--surface-soft);
+  /* 카드 배경(--canvas)보다 살짝 어두워야 카드가 "떠 보임" */
+}
+
+body.dark {
+  --primary: #2e8cff;
+  --primary-deep: #0064e0;
+  --primary-soft: rgba(46, 140, 255, 0.18);
+  --ink-button-bg: #ffffff;
+  --ink-button-text: #050505;
+  --canvas: #0b0b0e;
+  --surface-soft: #17181c;
+  --hairline: rgba(255, 255, 255, 0.14);
+  --hairline-soft: rgba(255, 255, 255, 0.08);
+  --ink-deep: #f5f6f7;
+  --ink: #e4e6e8;
+  --charcoal: #c7cace;
+  --slate: #a7abb0;
+  --steel: #85898f;
+  --stone: #7a7e86;
+
+  --page-bg: #000000;
+  /* --canvas(#0B0B0E)보다 더 어둡게 해서 카드가 페이지보다 밝게 "떠 보이도록" */
+}

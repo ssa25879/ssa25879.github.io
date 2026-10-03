@@ -1,0 +1,32 @@
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  section {
+    padding: var(--space-section) var(--space-lg);
+  }
+
+  .detail-page {
+    padding: 90px 20px 60px;
+  }
+
+  .detail-title {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 28px;
+  }
+}
