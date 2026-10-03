@@ -1,15 +1,20 @@
 /* ===== PROJECTS (목록) ===== */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-base);
 }
 
 .project-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
   background: var(--canvas);
   border: 1px solid var(--hairline-soft);
-  border-radius: var(--radius-xxxl);
-  padding: var(--space-xxl);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
   cursor: pointer;
   transition:
     border-color 0.2s,
@@ -22,9 +27,9 @@
 }
 
 .project-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
-  margin-bottom: var(--space-base);
+  margin-bottom: 12px;
 }
 
 .project-desc {
@@ -32,14 +37,15 @@
   line-height: 1.43;
   letter-spacing: -0.14px;
   color: var(--charcoal);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-base);
 }
 
 .project-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: var(--space-lg);
+  margin-top: auto;
+  margin-bottom: 12px;
 }
 
 .tag {
@@ -211,12 +217,12 @@
 }
 
 .project-kind {
-  margin-bottom: 0;
+  margin-bottom: 8px;
 }
 
 .project-subtitle {
   font-size: small;
-  margin-bottom: 0;
+  margin-bottom: 8px;
 }
 
 .project-subtitle-tight {

@@ -33,14 +33,15 @@ const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function navigate(url) {
   await page.goto(url, {waitUntil: 'load'});
 }
-async function compareLegacyPage(url) {
+async function compareLegacyPage(url, omitProjectList = false) {
   await navigate(url);
   // Added projects intentionally change the grid height; compare the preserved content separately.
   await evaluate(`document.querySelectorAll('[data-project-id="detail-6"], [data-project-id="detail-7"], #detail-6, #detail-7').forEach(el => el.remove())`);
+  if (omitProjectList) await evaluate(`document.getElementById('projects').remove()`);
 }
 // A missing style rule, changed content, or broken breakpoint changes these observations.
 const snapshot = `(() => [...document.body.querySelectorAll('*')]
-  .filter(el => !['SCRIPT', 'STYLE'].includes(el.tagName))
+  .filter(el => !['SCRIPT', 'STYLE'].includes(el.tagName) && !el.closest('#projects'))
   .map(el => {
     const s = getComputedStyle(el), r = el.getBoundingClientRect();
     return { tag: el.tagName, id: el.id, text: el.children.length ? '' : el.textContent.trim(),
@@ -61,13 +62,15 @@ const snapshot = `(() => [...document.body.querySelectorAll('*')]
   for (const width of [1280, 768, 480, 375]) {
     await page.setViewportSize({ width, height: 900 });
     await navigate(base + '/original.html');
+    await evaluate(`document.getElementById('projects').remove()`);
     const before = await evaluate(snapshot);
-    await compareLegacyPage(base + '/index.html');
+    await compareLegacyPage(base + '/index.html', true);
     assert.deepEqual(await evaluate(snapshot), before, `Initial content/layout changed at ${width}px`);
     console.log(`PASS original content and layout: ${width}px`);
     await evaluate(`document.querySelector('#theme-toggle').click()`);
     const darkAfter = await evaluate(snapshot);
     await navigate(base + '/original.html');
+    await evaluate(`document.getElementById('projects').remove()`);
     await evaluate(`document.querySelector('#theme-toggle').click()`);
     assert.deepEqual(darkAfter, await evaluate(snapshot), `Dark theme changed at ${width}px`);
     for (let id = 1; id <= 5; id++) {
@@ -81,6 +84,26 @@ const snapshot = `(() => [...document.body.querySelectorAll('*')]
     console.log(`PASS dark theme and five detail layouts: ${width}px`);
   }
   await navigate(base + '/index.html');
+  for (const [width, columns] of [[1280, 4], [900, 3], [768, 2], [480, 1], [375, 1], [320, 1]]) {
+    await page.setViewportSize({ width, height: 900 });
+    const layout = await evaluate(`(() => {
+      const grid = document.querySelector('.projects-grid');
+      const cards = [...grid.querySelectorAll('.project-card')];
+      const boxes = cards.map(card => card.getBoundingClientRect());
+      return {columns: getComputedStyle(grid).gridTemplateColumns.split(' ').length,
+        overflow: document.documentElement.scrollWidth > innerWidth,
+        padding: parseFloat(getComputedStyle(cards[0]).paddingLeft),
+        firstRowHeights: boxes.filter(box => box.top === boxes[0].top).map(box => box.height),
+        moreBottoms: cards.filter((card, i) => boxes[i].top === boxes[0].top)
+          .map(card => Math.round(card.querySelector('.project-more').getBoundingClientRect().bottom))};
+    })()`);
+    assert.equal(layout.columns, columns, `Compact grid columns at ${width}px`);
+    assert.equal(layout.overflow, false, `Main page overflow at ${width}px`);
+    assert(layout.padding <= 20, 'Compact cards must reduce the original 32px padding');
+    assert.equal(new Set(layout.firstRowHeights).size, 1, 'Cards in the same row must have equal heights');
+    assert.equal(new Set(layout.moreBottoms).size, 1, 'Detail links must align within a row');
+  }
+  console.log('PASS compact grid columns, spacing, alignment and overflow at six widths');
   const projectIds = await evaluate(`[...document.querySelectorAll('[data-project-id]')].map(el => el.dataset.projectId)`);
   assert.deepEqual(projectIds, ['detail-1', 'detail-2', 'detail-3', 'detail-4', 'detail-5', 'detail-6', 'detail-7'],
     'Both requested projects must be available from the project list');
