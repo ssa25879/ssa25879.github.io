@@ -1,19 +1,5 @@
-  /* ============================================================
-   🔧 이 파일은 HTML을 직접 수정하는 방식입니다.
-   각 섹션의 <!-- ✏️ 수정: ... --> 주석 아래 텍스트만 바꾸면 됩니다.
-   CSS는 상단 :root 변수만 건드리면 전체 색상이 바뀝니다.
-
-   📄 프로젝트 상세 페이지 안내
-   - 프로젝트 카드를 클릭(또는 Tab으로 포커스 후 Enter/Space)하면
-     실제 페이지 이동 없이 화면 하단의 <div id="detail-view"> 안 해당
-     project-detail 섹션이 나타납니다.
-   - 프로젝트를 추가하려면: 1) projects-grid에 카드 추가 2) detail-view에
-     project-detail 섹션 추가. 두 군데 모두 같은 id (예: detail-6) 로 연결하세요.
-
-   ♿ 접근성 안내
-   - 프로젝트 카드는 div지만 role="button" tabindex="0" 으로 키보드 포커스가
-     가능하고, Enter/Space 입력 시 handleCardKey()가 상세 페이지를 엽니다.
-   ============================================================ */
+/* Shared styles for React sections and project detail routes.
+   Update the color tokens below to change the site's theme. */
 
 :root {
   --primary: #0064e0;

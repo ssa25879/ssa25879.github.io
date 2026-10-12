@@ -1,4 +1,3 @@
-import './App.css'
 import Navbar from './componets/Navbar'
 import Hero from "./sections/Hero.jsx";
 import About from "./sections/About.jsx";
