@@ -5,6 +5,7 @@ import About from "./sections/About.jsx";
 import Skills from "./sections/Skills.jsx";
 import Projects from "./sections/Projects.jsx";
 import Awards from "./sections/Awards.jsx";
+import Contact from "./sections/Contact.jsx";
 import {Link, Route, Routes} from "react-router";
 import ProjectDetailPage from "./pages/ProjectDetailPage.jsx";
 
@@ -19,6 +20,7 @@ function App() {
                     <Skills/>
                     <Projects/>
                     <Awards/>
+                    <Contact/>
                 </>
             }/>
             
