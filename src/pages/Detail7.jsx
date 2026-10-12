@@ -1,3 +1,16 @@
+import titleScreen from "../assets/urban-survival/urban-survival-title.png";
+import rifleScreen from "../assets/urban-survival/urban-survival-combat_rifle.png";
+import shotgunScreen from "../assets/urban-survival/urban-survival-combat_shotgun.png";
+import bossScreen from "../assets/urban-survival/urban-survival-boss_redzone.png";
+import finalBossScreen from "../assets/urban-survival/urban-survival-final_boss.png";
+
+const screenshots = [
+  { src: titleScreen, alt: "Urban Survival 타이틀 화면" },
+  { src: rifleScreen, alt: "소총으로 좀비 웨이브에 맞서는 전투 화면" },
+  { src: shotgunScreen, alt: "산탄총으로 좀비 무리를 상대하는 전투 화면" },
+  { src: bossScreen, alt: "보스의 공격 범위가 표시된 전투 화면" },
+  { src: finalBossScreen, alt: "최종 보스전 화면" },
+
 export default function Detail7({ active, onClick }) {
   return (
 <section className="project-detail detail-page" id="detail-7" style={{ display: active ? "block" : "none" }} onClick={onClick}>
@@ -60,6 +73,17 @@ export default function Detail7({ active, onClick }) {
           사격 판정과 총구의 시각적 연출을 분리하고, 카메라 방향과 미니맵 좌표 기준을 일치시켰습니다.
           전투 중 필요한 상태를 HUD로 전달하면서, 설정 기능은 다른 Unity 프로젝트에서도 사용할 수 있도록 분리했습니다.
         </p>
+      </div>
+
+      <div className="detail-section">
+        <h2 className="detail-section-title">프로젝트 스크린샷</h2>
+        <div className="screenshot-grid urban-survival-gallery">
+          {screenshots.map(({ src, alt }) => (
+            <div className="screenshot-box" key={src}>
+              <img src={src} alt={alt} loading="lazy" decoding="async" />
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="detail-section">
