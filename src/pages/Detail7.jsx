@@ -10,6 +10,7 @@ const screenshots = [
   { src: shotgunScreen, alt: "산탄총으로 좀비 무리를 상대하는 전투 화면" },
   { src: bossScreen, alt: "보스의 공격 범위가 표시된 전투 화면" },
   { src: finalBossScreen, alt: "최종 보스전 화면" },
+];
 
 export default function Detail7({ active, onClick }) {
   return (

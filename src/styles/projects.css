@@ -209,6 +209,32 @@
   object-fit: contain;
 }
 
+.image-search-gallery {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+}
+
+.image-search-gallery figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.image-search-gallery .screenshot-box {
+  aspect-ratio: 9 / 16;
+  padding: 0;
+  border-style: solid;
+}
+
+.image-search-gallery .screenshot-box img {
+  object-fit: contain;
+}
+
+.image-search-gallery figcaption {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--steel);
+}
+
 .detail-link {
   display: inline-flex;
   align-items: center;

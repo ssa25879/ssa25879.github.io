@@ -1,3 +1,13 @@
+import flowersScreen from "../assets/image-search/flowers.png";
+import catsScreen from "../assets/image-search/cats.png";
+import forestScreen from "../assets/image-search/forest.png";
+
+const screenshots = [
+  { src: flowersScreen, label: "꽃 검색", alt: "꽃 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
+  { src: catsScreen, label: "고양이 검색", alt: "고양이 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
+  { src: forestScreen, label: "숲 검색", alt: "숲 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
+];
+
 export default function Detail6({ active, onClick }) {
   return (
 <section className="project-detail detail-page" id="detail-6" style={{ display: active ? "block" : "none" }} onClick={onClick}>
@@ -18,6 +28,20 @@ export default function Detail6({ active, onClick }) {
           검색어로 이미지를 찾고 결과와 썸네일을 확인할 수 있는 세로형 앱입니다.
           UI Toolkit으로 화면을 구성하고, 검색과 썸네일 로딩을 별도의 Repository 인터페이스로 연결했습니다.
         </p>
+      </div>
+
+      <div className="detail-section">
+        <h2 className="detail-section-title">실행 화면</h2>
+        <div className="screenshot-grid image-search-gallery">
+          {screenshots.map(({ src, label, alt }) => (
+            <figure key={src}>
+              <a className="screenshot-box" href={src} target="_blank" rel="noopener noreferrer">
+                <img src={src} alt={alt} width="1080" height="1920" loading="lazy" />
+              </a>
+              <figcaption>{label}</figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
 
       <div className="detail-section">
