@@ -189,6 +189,47 @@
   gap: 12px;
 }
 
+.preview-gallery {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
+.preview-gallery figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.preview-image-link {
+  display: flex;
+  height: 220px;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  background: var(--canvas);
+}
+
+.preview-image-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.preview-gallery figcaption {
+  margin-top: 8px;
+  color: var(--steel);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.preview-gallery-portrait {
+  grid-template-columns: repeat(auto-fit, minmax(0, 180px));
+  justify-content: start;
+}
+
+.preview-gallery-portrait .preview-image-link {
+  height: auto;
+  aspect-ratio: 636 / 1048;
+}
+
 .screenshot-box {
   aspect-ratio: 4 / 3;
   border-radius: var(--radius-lg);

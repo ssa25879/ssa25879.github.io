@@ -8,6 +8,9 @@ import Detail7 from '../pages/Detail7.jsx';
 import Detail8 from '../pages/Detail8.jsx';
 import Detail9 from '../pages/Detail9.jsx';
 import Detail10 from '../pages/Detail10.jsx';
+import Detail11 from '../pages/Detail11.jsx';
+import Detail12 from '../pages/Detail12.jsx';
+import Detail13 from '../pages/Detail13.jsx';
 
 export default function ProjectDetail({ projectId, onClick }) {
   return (<div id="detail-view" style={{ display: projectId ? "block" : "none" }}>
@@ -21,5 +24,8 @@ export default function ProjectDetail({ projectId, onClick }) {
     <Detail8 active={projectId === "detail-8"} onClick={onClick} />
     <Detail9 active={projectId === "detail-9"} onClick={onClick} />
     <Detail10 active={projectId === "detail-10"} onClick={onClick} />
+    <Detail11 active={projectId === "detail-11"} onClick={onClick} />
+    <Detail12 active={projectId === "detail-12"} onClick={onClick} />
+    <Detail13 active={projectId === "detail-13"} onClick={onClick} />
   </div>);
 }

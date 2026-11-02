@@ -9,7 +9,7 @@ import Contact from './sections/Contact.jsx';
 import Footer from './sections/Footer.jsx';
 import ProjectDetail from './componets/ProjectDetail.jsx';
 
-const projectIds = new Set(['detail-1', 'detail-2', 'detail-3', 'detail-4', 'detail-5', 'detail-6', 'detail-7', 'detail-8', 'detail-9', 'detail-10']);
+const projectIds = new Set(['detail-1', 'detail-2', 'detail-3', 'detail-4', 'detail-5', 'detail-6', 'detail-7', 'detail-8', 'detail-9', 'detail-10', 'detail-11', 'detail-12', 'detail-13']);
 
 export default function App() {
   const [projectId, setProjectId] = useState(null);
