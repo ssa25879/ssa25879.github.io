@@ -98,6 +98,15 @@ export default function Detail9({ active, onClick }) {
         </a>
       </div>
       <div className="detail-section">
+        <h2 className="detail-section-title">문제 해결과 검증</h2>
+        <p className="retro-text">
+          같은 달을 다시 내보낼 때 파일 이름이 겹치는 문제를 줄이기 위해 이름에 내보낸 시각을 포함했습니다.
+          캘린더 알림은 앱의 푸시 알림이 아닌 ICS의 VALARM으로 제공하며, 파일을 가져온 캘린더 앱에서 처리합니다.
+          내보내기와 ICS 생성 관련 단위 테스트 27개를 확인했습니다(2026.11.02).
+          이 검사는 SDK 호출과 파일 내용을 검증하며, 실제 캘린더 앱의 가져오기·알림 동작은 별도 확인 대상입니다.
+        </p>
+      </div>
+      <div className="detail-section">
         <h2 className="detail-section-title">
           프로젝트 미리보기
         </h2>

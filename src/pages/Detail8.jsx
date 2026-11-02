@@ -91,6 +91,15 @@ export default function Detail8({ active, onClick }) {
         </div>
       </div>
       <div className="detail-section">
+        <h2 className="detail-section-title">문제 해결과 검증</h2>
+        <p className="retro-text">
+          양념만 보유해도 적합한 레시피로 추천되는 일을 막기 위해 주재료를 기준으로 매칭률을 계산했습니다.
+          미지원 주재료도 계산의 분모에 남겨 매칭률이 부풀려지지 않게 하고, 부족 재료는 별도로 안내합니다.
+          추천 계산 단위 테스트 29개를 확인했습니다(2026.11.02). 이 검사는 추천 규칙을 검증하며,
+          실제 조리 가능 여부나 사용자의 만족도를 측정한 결과는 아닙니다.
+        </p>
+      </div>
+      <div className="detail-section">
         <h2 className="detail-section-title">
           프로젝트 미리보기
         </h2>

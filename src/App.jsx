@@ -11,8 +11,13 @@ import ProjectDetail from './componets/ProjectDetail.jsx';
 
 const projectIds = new Set(['detail-1', 'detail-2', 'detail-3', 'detail-4', 'detail-5', 'detail-6', 'detail-7', 'detail-8', 'detail-9', 'detail-10', 'detail-11', 'detail-12', 'detail-13']);
 
+function projectFromHash() {
+  const id = window.location.hash.slice(1);
+  return projectIds.has(id) ? id : null;
+}
+
 export default function App() {
-  const [projectId, setProjectId] = useState(null);
+  const [projectId, setProjectId] = useState(projectFromHash);
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -22,25 +27,33 @@ export default function App() {
   }, [dark]);
 
   useEffect(() => {
-    function onPopState(event) {
-      const state = event.state;
-      if (state?.view === 'detail' && state.projectId) {
-        if (projectIds.has(state.projectId)) {
-          setProjectId(state.projectId);
-          window.scrollTo(0, 0);
-        }
-      } else {
-        setProjectId(null);
-      }
+    function syncLocation() {
+      const id = projectFromHash();
+      setProjectId(id);
+      if (id) window.scrollTo(0, 0);
     }
-    window.addEventListener('popstate', onPopState);
-    return () => window.removeEventListener('popstate', onPopState);
+    window.addEventListener('popstate', syncLocation);
+    window.addEventListener('hashchange', syncLocation);
+    return () => {
+      window.removeEventListener('popstate', syncLocation);
+      window.removeEventListener('hashchange', syncLocation);
+    };
   }, []);
 
   function onNavigation(event) {
     if (event.target.closest('[data-toggle-theme]')) setDark(value => !value);
     if (event.target.closest('[data-toggle-menu]')) setMenuOpen(value => !value);
-    if (event.target.closest('[data-show-main]')) setProjectId(null);
+    const mainLink = event.target.closest('[data-show-main]');
+    if (mainLink) {
+      event.preventDefault();
+      const hash = mainLink.getAttribute('href') || '#';
+      history.pushState(null, '', hash);
+      setProjectId(null);
+      requestAnimationFrame(() => {
+        if (hash === '#') window.scrollTo(0, 0);
+        else document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
+      });
+    }
     if (event.target.closest('[data-close-menu]')) setMenuOpen(false);
   }
 
@@ -61,6 +74,7 @@ export default function App() {
     if (history.state?.view === 'detail') {
       history.back();
     } else {
+      history.replaceState(null, '', '#projects');
       setProjectId(null);
       requestAnimationFrame(() => document.getElementById('projects').scrollIntoView({ behavior: 'instant' }));
     }

@@ -97,7 +97,7 @@ let browser;
   assert.equal(await capstone.locator('.detail-section').filter({ has: page.getByRole('heading', { name: '담당 내용', exact: true }) }).locator('li').count(), 3);
   assert.equal(await capstone.locator('a[href="https://github.com/ssa25879/capstone"]').count(), 1);
   assert.equal(await page.locator('#detail-7 a[href="https://github.com/ssa25879/UrbanSurvival"]').count(), 1);
-  assert.equal(await page.locator('#detail-4 a[href="https://youtu.be/3g2RF_wvLGw"]').count(), 1);
+  assert.equal(await page.locator('#detail-4 a[href="https://youtu.be/1m5YNTJQpFM"]').count(), 1);
   assert.equal(await page.locator('#detail-9 a[href="https://ssa25879.github.io/web-TurnCal/"]').count(), 1);
   for (const key of ['Enter', 'Space']) {
     await load(`/?keyboard=${key}`);
@@ -115,8 +115,16 @@ let browser;
   assert(await page.locator('#mobile-drawer').evaluate(el => el.classList.contains('open')));
   await page.locator('#mobile-drawer a[href="#awards"]').click();
   assert.equal(await page.locator('#mobile-drawer').evaluate(el => el.classList.contains('open')), false);
-  await load('/#detail-7');
-  assert.equal(await page.locator('#detail-view').isVisible(), false);
+  for (const id of [2, 7, 8]) {
+    await page.goto(`${base}/#detail-${id}`);
+    await page.locator(`#detail-${id}`).waitFor({ state: 'visible' });
+    await page.reload();
+    await page.locator(`#detail-${id}`).waitFor({ state: 'visible' });
+    assert.equal(await page.locator('.project-detail:visible').count(), 1);
+    await page.locator(`#detail-${id} [data-back-to-projects]`).click();
+    await page.locator('#main-view').waitFor({ state: 'visible' });
+  }
+  await load('/#detail-missing');
   assert.equal(await page.locator('body').evaluate(el => el.classList.contains('dark')), false);
   await page.locator('[data-project-id="detail-3"]').evaluate(el => el.setAttribute('data-project-id', 'missing'));
   await page.locator('[data-project-id="missing"]').click();

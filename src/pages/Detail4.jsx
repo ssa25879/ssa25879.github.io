@@ -112,7 +112,7 @@ export default function Detail4({ active, onClick }) {
         <h2 className="detail-section-title">
           프로젝트 영상
         </h2>
-        <a className="detail-link" href="https://youtu.be/3g2RF_wvLGw" target="_blank" rel="noopener noreferrer">
+        <a className="detail-link" href="https://youtu.be/1m5YNTJQpFM" target="_blank" rel="noopener noreferrer">
           🔗 영상 링크
         </a>
       </div>

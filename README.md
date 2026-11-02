@@ -33,7 +33,7 @@ npm test
 
 대표 프로젝트는 Urban Survival, VR 리듬게임, 이미지 검색 앱, 보드게임 AR 가이드 앱, 턴캘, Frending(capstone) 순서입니다. Block Dodge, 식품 정보 앱 → 냉털픽, 리뷰 AI 분석기, 인계한장, 복습큐, 구독레이더는 다른 프로젝트로 표시합니다.
 
-`#detail-1`~`#detail-13` 해시와 History API를 사용하며, 상세 URL 새로고침은 메인에서 시작합니다. 테마 선택은 저장하지 않습니다. 기존 React Router의 `/projects/:projectId` 경로는 해시 전환으로 교체했습니다.
+`#detail-1`~`#detail-13` 해시와 History API를 사용하며, 상세 URL 직접 진입과 새로고침 시 해당 프로젝트를 표시합니다. 테마 선택은 저장하지 않습니다. 기존 React Router의 `/projects/:projectId` 경로는 해시 전환으로 교체했습니다.
 
 ## 검증 범위
 

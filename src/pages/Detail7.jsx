@@ -18,7 +18,7 @@ export default function Detail7({ active, onClick }) {
       <button className="detail-back" data-back-to-projects="">← 목록으로</button>
       <div className="detail-header">
         <h1 className="detail-title">Urban Survival</h1>
-        <p className="detail-period">PC · Android · 업데이트 진행 중</p>
+        <p className="detail-period">PC · Android · 기본 개발 완료 후 개선 중</p>
         <div className="detail-tags">
           <span className="detail-tag">Unity 6</span><span className="detail-tag">C#</span>
           <span className="detail-tag">URP</span><span className="detail-tag">NavMesh</span>
@@ -30,7 +30,7 @@ export default function Detail7({ active, onClick }) {
         <h2 className="detail-section-title">프로젝트 개요</h2>
         <p className="retro-text">
           도시 전장에서 좀비의 공격을 피하며 생존하는 PC·Android 싱글 플레이 탑뷰 게임입니다.
-          무기·웨이브·보스 전투와 전투 HUD, 설정 기능을 구현하고 업데이트하고 있습니다.
+          무기·웨이브·보스 전투와 전투 HUD, 설정 기능의 기본 개발을 완료하고 개선을 진행하고 있습니다.
         </p>
       </div>
 
