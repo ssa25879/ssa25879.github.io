@@ -43,9 +43,9 @@ let browser;
     const other = page.getByRole('group', { name: '다른 프로젝트', exact: true });
     assert.deepEqual(await featured.locator('[data-project-id]').evaluateAll(els => els.map(el => el.dataset.projectId)),
       ['detail-7', 'detail-4', 'detail-6', 'detail-5', 'detail-9', 'detail-2']);
-    assert.equal(await other.locator('[data-project-id]').count(), 4);
+    assert.equal(await other.locator('[data-project-id]').count(), 7);
     await noOverflow(`Main overflow at ${width}px`);
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 13; i++) {
       await page.locator(`[data-project-id="detail-${i}"]`).click();
       const detail = page.locator(`#detail-${i}`);
       await detail.waitFor({ state: 'visible' });
@@ -58,9 +58,24 @@ let browser;
     await page.locator('[data-toggle-theme]').click();
     assert(await page.locator('body').evaluate(el => el.classList.contains('dark')));
     await noOverflow(`Dark overflow at ${width}px`);
-    console.log(`PASS ${width}px: featured order, 10 details, back navigation, theme, no overflow`);
+    console.log(`PASS ${width}px: featured order, 13 details, back navigation, theme, no overflow`);
   }
   await load();
+  for (const id of [2, 4, 5, 8, 9, 10, 11, 12, 13]) {
+    const previews = page.locator(`#detail-${id} .preview-gallery img`);
+    assert(await previews.count() >= 3, `At least three previews for detail ${id}`);
+    const decoded = await previews.evaluateAll(async images => Promise.all(images.map(async img => {
+      img.loading = 'eager';
+      try { await img.decode(); return img.naturalWidth > 0 && !!img.alt; } catch { return false; }
+    })));
+    assert(decoded.every(Boolean), `Preview assets load with alt text for detail ${id}`);
+  }
+  assert.equal(await page.locator('#detail-1 img').count(), 0, 'Food app remains excluded from previews');
+  assert.equal(await page.locator('#detail-1 a[href="https://github.com/ssa25879/ait-FridgePick"]').count(), 1);
+  assert((await page.locator('#detail-8').textContent()).includes('기존 식품 정보 앱을 개선·확장'));
+  for (const [id, repo] of [[11, 'ait-onepage-handover'], [12, 'ait-ReviewQ'], [13, 'ait-subscription-radar']]) {
+    assert.equal(await page.locator(`#detail-${id} a[href="https://github.com/ssa25879/${repo}"]`).count(), 1);
+  }
   const capstone = page.locator('#detail-2');
   await page.locator('[data-project-id="detail-2"]').click();
   await capstone.waitFor({ state: 'visible' });
