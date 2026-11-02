@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family:
+    "Montserrat", "Helvetica Neue", Helvetica, Arial, "Noto Sans",
+    sans-serif;
+  background: var(--page-bg);
+  /* 좌우 여백을 회색(다크모드는 더 어둡게)으로, 중앙 콘텐츠는 카드처럼 보이게 */
+  color: var(--ink);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--ink-deep);
+}
+
+a {
+  color: inherit;
+}
+
+/* 키보드 포커스 표시: 버튼/링크/role=button 요소 공통 */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
