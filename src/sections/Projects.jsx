@@ -181,32 +181,7 @@ export default function Projects({ onClick, onKeyDown }) {
         다른 프로젝트
       </h3>
       <div className="projects-grid" role="group" aria-label="다른 프로젝트">
-        <div className="project-card" role="button" tabIndex="0" aria-label="식품 정보 앱 프로젝트 상세보기" data-project-id="detail-1">
-          <p className="project-desc project-kind">
-            [APP / API]
-          </p>
-          <div className="project-title">
-            식품 정보 앱
-          </div>
-          <p className="project-desc">
-            공공 OpenAPI를 활용해 식품의 영양 성분과 첨가물 정보를 조회할 수 있는 앱을 개발했습니다. 이후 냉털픽으로 개선·확장했습니다.
-          </p>
-          <div className="project-tags">
-            <span className="tag">
-              Android
-            </span>
-            <span className="tag">
-              Java
-            </span>
-            <span className="tag">
-              OpenAPI
-            </span>
-          </div>
-          <span className="project-more">
-            자세히 보기 →
-          </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="Dodge 게임 프로젝트 상세보기" data-project-id="detail-3">
+<div className="project-card" role="button" tabIndex="0" aria-label="Dodge 게임 프로젝트 상세보기" data-project-id="detail-3">
           <p className="project-desc project-kind">
             [Game / Unity]
           </p>
@@ -234,15 +209,15 @@ export default function Projects({ onClick, onKeyDown }) {
             자세히 보기 →
           </span>
         </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="냉털픽 토스 미니앱 프로젝트 상세보기" data-project-id="detail-8">
+        <div className="project-card" role="button" tabIndex="0" aria-label="식품 정보 앱에서 냉털픽으로 발전한 프로젝트 상세보기" data-project-id="detail-8">
           <p className="project-desc project-kind">
             [Mini App / Apps in Toss]
           </p>
           <div className="project-title">
-            냉털픽 (ait-FridgePick)
+            식품 정보 앱 → 냉털픽
           </div>
           <p className="project-desc">
-            기존 식품 정보 앱을 개선·확장한 앱인토스 미니앱입니다. 보유 재료로 레시피를 추천하고 부족한 재료를 알려줍니다.
+            과거 Android·Java와 OpenAPI로 식품 정보를 조회하는 앱을 만들었습니다. 이후 React·TypeScript와 AI 개발 도구를 활용해, 재료 기반 레시피를 추천하는 앱인토스 미니앱으로 개선했습니다.
           </p>
           <div className="project-tags">
             <span className="tag">

@@ -10,10 +10,10 @@ export default function Detail8({ active, onClick }) {
       </button>
       <div className="detail-header">
         <h1 className="detail-title">
-          냉털픽 (ait-FridgePick)
+          식품 정보 앱 → 냉털픽
         </h1>
         <p className="detail-period">
-          Apps in Toss · 출시 · 2026.10.06
+          2022 Android 앱 → 2026 앱인토스 미니앱 · 냉털픽 출시
         </p>
         <div className="detail-tags">
           <span className="detail-tag">
@@ -38,8 +38,26 @@ export default function Detail8({ active, onClick }) {
           프로젝트 개요
         </h2>
         <p className="retro-text">
-          기존 식품 정보 앱을 개선·확장해 앱인토스 미니앱 냉털픽으로 발전시켰습니다. 사용자가 보유한 식재료를 선택하면 공식 레시피 후보를 추천하고, 부족한 재료를 함께 보여주는 Apps in Toss 미니앱입니다. 실행 중 외부 레시피 API를 호출하지 않고 정적 레시피 카탈로그를 사용합니다.
+          과거 Android·Java와 공공 OpenAPI로 식품 영양 정보를 조회하는 앱을 만들었습니다. 이후 React·TypeScript와 AI 개발 도구를 활용해, 보유 재료로 레시피를 추천하는 앱인토스 미니앱 냉털픽으로 개선·확장했습니다.
         </p>
+      </div>
+      <div className="detail-section">
+        <h2 className="detail-section-title">과거 작업과 현재의 개선</h2>
+        <div className="detail-subsection">
+          <div className="detail-subsection-title">이전 · 식품 정보 앱 (2022.03 ~ 2022.10)</div>
+          <ul className="detail-list">
+            <li>Android·Java 기반으로 공공 OpenAPI의 영양 정보를 조회하고 JSON 응답을 화면에 표시했습니다.</li>
+            <li>팀장으로서 역할을 분담하고 API 연동과 결과물 통합을 담당했습니다.</li>
+          </ul>
+        </div>
+        <div className="detail-subsection">
+          <div className="detail-subsection-title">현재 · 냉털픽 (2026)</div>
+          <ul className="detail-list">
+            <li>React·TypeScript·Vite와 Toss TDS로 토스 안에서 실행하는 미니앱을 제작했습니다.</li>
+            <li>식품 정보 조회 경험을 재료 선택·레시피 추천·부족 재료 안내로 확장했습니다.</li>
+            <li>AI 개발 도구는 개발 보조에 활용했으며, 추천은 정적 레시피 카탈로그의 주재료 매칭률로 계산합니다.</li>
+          </ul>
+        </div>
       </div>
       <div className="detail-section">
         <h2 className="detail-section-title">
