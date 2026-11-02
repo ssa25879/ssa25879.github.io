@@ -31,9 +31,14 @@
     if (history.state?.view === "detail") {
       history.back();
     } else {
+      history.replaceState(null, "", "#projects");
       showMainView();
       document.getElementById("projects").scrollIntoView({ behavior: "instant" });
     }
+  }
+
+  function syncLocation() {
+    if (!renderProjectDetail(window.location.hash.slice(1))) showMainView();
   }
 
   function init() {
@@ -51,13 +56,9 @@
       button.addEventListener("click", backToProjects);
     });
 
-    window.addEventListener("popstate", (event) => {
-      if (event.state?.view === "detail" && event.state?.projectId) {
-        renderProjectDetail(event.state.projectId);
-      } else {
-        showMainView();
-      }
-    });
+    window.addEventListener("popstate", syncLocation);
+    window.addEventListener("hashchange", syncLocation);
+    syncLocation();
   }
 
   portfolio.projects = { init, showMainView };

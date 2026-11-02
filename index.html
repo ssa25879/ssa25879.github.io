@@ -52,7 +52,7 @@
       <!-- ✏️ 수정: 이름 -->
       <h1 class="hero-title">안녕하세요,<br /><span>윤우상</span>입니다.</h1>
       <!-- ✏️ 수정: 한 줄 소개 -->
-      <p class="hero-sub">모바일과 웹의 경계를 탐구하는 개발자입니다.</p>
+      <p class="hero-sub">Unity 게임과 모바일·웹 서비스를 만드는 개발자입니다.</p>
       <div class="hero-btns">
         <a href="#projects" class="btn btn-primary">프로젝트 보기</a>
         <a href="#contact" class="btn btn-secondary">연락하기</a>
@@ -98,13 +98,16 @@
         <div class="skill-pill"><span>🤖</span>Android Studio</div>
         <div class="skill-pill"><span>☕</span>Java</div>
         <div class="skill-pill"><span>🟨</span>JavaScript</div>
+        <div class="skill-pill"><span>🔷</span>TypeScript</div>
         <div class="skill-pill"><span>⚙️</span>C / C# / C++</div>
         <div class="skill-pill"><span>⚛️</span>React</div>
         <div class="skill-pill"><span>🌐</span>HTML5</div>
-        <div class="skill-pill"><span>🗄️</span>MySQL</div>
+        <div class="skill-pill"><span>🗄️</span>MySQL / MS-SQL</div>
         <div class="skill-pill"><span>🐙</span>Git / GitHub</div>
         <div class="skill-pill"><span>💬</span>Discord Bot</div>
         <div class="skill-pill"><span>🎮</span>Unity</div>
+        <div class="skill-pill"><span>🖼️</span>UI Toolkit</div>
+        <div class="skill-pill"><span>⏱️</span>UniTask</div>
         <div class="skill-pill"><span>🕹️</span>Unreal</div>
       </div>
     </section>
@@ -968,7 +971,7 @@
     <h2 class="detail-section-title">
       프로젝트 영상
     </h2>
-    <a class="detail-link" href="https://youtu.be/3g2RF_wvLGw" target="_blank" rel="noopener noreferrer">
+    <a class="detail-link" href="https://youtu.be/1m5YNTJQpFM" target="_blank" rel="noopener noreferrer">
       🔗 영상 링크
     </a>
   </div>
@@ -1203,7 +1206,7 @@
   <button class="detail-back" data-back-to-projects="">← 목록으로</button>
   <div class="detail-header">
     <h1 class="detail-title">Urban Survival</h1>
-    <p class="detail-period">PC · Android · 업데이트 진행 중</p>
+    <p class="detail-period">PC · Android · 기본 개발 완료 후 개선 중</p>
     <div class="detail-tags">
       <span class="detail-tag">Unity 6</span>
       <span class="detail-tag">C#</span>
@@ -1215,7 +1218,7 @@
   </div>
   <div class="detail-section">
     <h2 class="detail-section-title">프로젝트 개요</h2>
-    <p class="retro-text">도시 전장에서 좀비의 공격을 피하며 생존하는 PC·Android 싱글 플레이 탑뷰 게임입니다. 무기·웨이브·보스 전투와 전투 HUD, 설정 기능을 구현하고 업데이트하고 있습니다.</p>
+    <p class="retro-text">도시 전장에서 좀비의 공격을 피하며 생존하는 PC·Android 싱글 플레이 탑뷰 게임입니다. 무기·웨이브·보스 전투와 전투 HUD, 설정 기능의 기본 개발을 완료하고 개선을 진행하고 있습니다.</p>
   </div>
   <div class="detail-section">
     <h2 class="detail-section-title">프로젝트 개발 및 수행 내용</h2>
@@ -1374,6 +1377,15 @@
     </div>
   </div>
   <div class="detail-section">
+    <h2 class="detail-section-title">문제 해결과 검증</h2>
+    <p class="retro-text">
+      양념만 보유해도 적합한 레시피로 추천되는 일을 막기 위해 주재료를 기준으로 매칭률을 계산했습니다.
+      미지원 주재료도 계산의 분모에 남겨 매칭률이 부풀려지지 않게 하고, 부족 재료는 별도로 안내합니다.
+      추천 계산 단위 테스트 29개를 확인했습니다(2026.11.02). 이 검사는 추천 규칙을 검증하며,
+      실제 조리 가능 여부나 사용자의 만족도를 측정한 결과는 아닙니다.
+    </p>
+  </div>
+  <div class="detail-section">
     <h2 class="detail-section-title">
       프로젝트 미리보기
     </h2>
@@ -1508,6 +1520,15 @@
     <a class="detail-link" href="https://ssa25879.github.io/web-TurnCal/" target="_blank" rel="noopener noreferrer">
       ↗ 턴캘 웹 사용하기
     </a>
+  </div>
+  <div class="detail-section">
+    <h2 class="detail-section-title">문제 해결과 검증</h2>
+    <p class="retro-text">
+      같은 달을 다시 내보낼 때 파일 이름이 겹치는 문제를 줄이기 위해 이름에 내보낸 시각을 포함했습니다.
+      캘린더 알림은 앱의 푸시 알림이 아닌 ICS의 VALARM으로 제공하며, 파일을 가져온 캘린더 앱에서 처리합니다.
+      내보내기와 ICS 생성 관련 단위 테스트 27개를 확인했습니다(2026.11.02).
+      이 검사는 SDK 호출과 파일 내용을 검증하며, 실제 캘린더 앱의 가져오기·알림 동작은 별도 확인 대상입니다.
+    </p>
   </div>
   <div class="detail-section">
     <h2 class="detail-section-title">
