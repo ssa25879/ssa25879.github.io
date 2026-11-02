@@ -43,9 +43,11 @@ let browser;
     const other = page.getByRole('group', { name: '다른 프로젝트', exact: true });
     assert.deepEqual(await featured.locator('[data-project-id]').evaluateAll(els => els.map(el => el.dataset.projectId)),
       ['detail-7', 'detail-4', 'detail-6', 'detail-5', 'detail-9', 'detail-2']);
-    assert.equal(await other.locator('[data-project-id]').count(), 7);
+    assert.equal(await other.locator('[data-project-id]').count(), 6);
+    assert.equal(await page.locator('[data-project-id="detail-1"]').count(), 0, 'Food app and FridgePick share one card');
+    assert.equal(await page.locator('[data-project-id="detail-8"]').count(), 1);
     await noOverflow(`Main overflow at ${width}px`);
-    for (let i = 1; i <= 13; i++) {
+    for (const i of [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]) {
       await page.locator(`[data-project-id="detail-${i}"]`).click();
       const detail = page.locator(`#detail-${i}`);
       await detail.waitFor({ state: 'visible' });
@@ -69,7 +71,7 @@ let browser;
     await page.locator('[data-toggle-theme]').click();
     assert(await page.locator('body').evaluate(el => el.classList.contains('dark')));
     await noOverflow(`Dark overflow at ${width}px`);
-    console.log(`PASS ${width}px: featured order, 13 details, back navigation, theme, no overflow`);
+    console.log(`PASS ${width}px: featured order, 12 project cards, back navigation, theme, no overflow`);
   }
   await load();
   for (const id of [2, 4, 5, 8, 9, 10, 11, 12, 13]) {
@@ -83,7 +85,8 @@ let browser;
   }
   assert.equal(await page.locator('#detail-1 img').count(), 0, 'Food app remains excluded from previews');
   assert.equal(await page.locator('#detail-1 a[href="https://github.com/ssa25879/ait-FridgePick"]').count(), 1);
-  assert((await page.locator('#detail-8').textContent()).includes('기존 식품 정보 앱을 개선·확장'));
+  const journey = await page.locator('#detail-8').textContent();
+  for (const text of ['Android·Java', 'React·TypeScript', 'AI 개발 도구', '주재료 매칭률']) assert(journey.includes(text));
   for (const [id, repo] of [[11, 'ait-onepage-handover'], [12, 'ait-ReviewQ'], [13, 'ait-subscription-radar']]) {
     assert.equal(await page.locator(`#detail-${id} a[href="https://github.com/ssa25879/${repo}"]`).count(), 1);
   }
@@ -115,7 +118,7 @@ let browser;
   await load('/#detail-7');
   assert.equal(await page.locator('#detail-view').isVisible(), false);
   assert.equal(await page.locator('body').evaluate(el => el.classList.contains('dark')), false);
-  await page.locator('[data-project-id="detail-1"]').evaluate(el => el.setAttribute('data-project-id', 'missing'));
+  await page.locator('[data-project-id="detail-3"]').evaluate(el => el.setAttribute('data-project-id', 'missing'));
   await page.locator('[data-project-id="missing"]').click();
   assert(await page.locator('#main-view').isVisible());
   assert.deepEqual(errors, [], 'Browser JavaScript exceptions');
