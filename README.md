@@ -18,7 +18,7 @@ assets/js/
   projects.js              프로젝트 표시·키보드·History API
   navigation.js            모바일 메뉴·메인 화면 복귀
   app.js                   기능 초기화
-tests/verify.cjs            실제 브라우저 동작 및 원본 비교
+tests/verify.cjs            프로젝트 구성·탐색의 브라우저 회귀 검사
 ```
 
 스타일은 위 순서로 로드합니다. 스크립트는 `theme → projects → navigation → app` 순서로 `defer` 로드합니다. 각 기능은 즉시 실행 함수 내부에 구현을 두고 `window.Portfolio`를 통해 필요한 인터페이스만 공유합니다.
@@ -28,14 +28,15 @@ tests/verify.cjs            실제 브라우저 동작 및 원본 비교
 - 소개·기술·연락처 등의 내용은 `index.html`의 해당 섹션에서 수정합니다.
 - 색상·간격은 `assets/css/tokens.css`에서 수정합니다. 기능별 스타일은 해당 CSS 파일에서 수정합니다.
 - 동작은 해당 JavaScript 파일에서 수정합니다. HTML에 `onclick`이나 `onkeydown`을 추가하지 않습니다.
-- 프로젝트 목록은 최소 카드 폭 220px의 격자로 표시하며, 768px 이하에서는 2열, 480px 이하에서는 1열로 표시합니다. 카드 내부 여백은 기본 20px, 모바일 16px이고 내용은 생략하지 않습니다. 좌우 스크롤은 추후 카드 수가 늘어날 때 검토합니다.
+- 대표 프로젝트는 Urban Survival, VR 리듬게임, 이미지 검색 앱, 보드게임 AR 가이드 앱, 턴캘, Frending(capstone) 순서입니다. 식품 정보 앱, Block Dodge, 냉털픽, 리뷰 AI 분석기는 다른 프로젝트로 유지합니다.
+- 대표 프로젝트는 데스크톱 3열, 768px 이하 2열, 480px 이하 1열로 표시합니다. 다른 프로젝트는 최소 카드 폭 220px의 격자를 사용하며 동일한 모바일 열 수를 적용합니다. 카드 내부 여백은 기본 20px, 모바일 16px이고 내용은 생략하지 않습니다.
 - 새 기능 파일은 HTML에 `defer`로 연결하고 `app.js`에서 초기화합니다.
 
 프로젝트 추가 순서:
 
 1. `#projects .projects-grid`에 카드 HTML을 추가합니다.
-2. 카드에 `role="button"`, `tabindex="0"`, `aria-label`, `data-project-id="detail-8"`를 지정합니다. 현재 프로젝트는 `detail-1`부터 `detail-7`까지 등록되어 있습니다.
-3. `#detail-view`에 같은 ID의 `<section class="project-detail detail-page" id="detail-8">`를 추가합니다.
+2. 카드에 `role="button"`, `tabindex="0"`, `aria-label`, `data-project-id="detail-11"`를 지정합니다. 현재 프로젝트는 `detail-1`부터 `detail-10`까지 등록되어 있습니다.
+3. `#detail-view`에 같은 ID의 `<section class="project-detail detail-page" id="detail-11">`를 추가합니다.
 4. 상세 목록 복귀 버튼에 `class="detail-back" data-back-to-projects`를 지정합니다.
 
 `data-show-main`은 메인 화면 복귀, `data-close-menu`는 모바일 메뉴 닫기, `data-toggle-menu`와 `data-toggle-theme`는 각각 메뉴·테마 버튼을 연결합니다. 카드와 상세 화면의 ID가 일치하지 않으면 화면과 URL을 변경하지 않습니다.
@@ -66,4 +67,4 @@ $env:NODE_PATH = "$runtimeRoot\node_modules"
 & "$runtimeRoot\bin\node.exe" tests/verify.cjs
 ```
 
-검증은 원본 커밋 `85969cb`와 1280·768·480·375px의 프로젝트 목록 외 기존 콘텐츠, 주요 computed style, 요소 배치, 다크 테마와 기존 프로젝트 상세 5개를 비교합니다. 기존 영역 비교 시 변경한 프로젝트 목록과 새 상세 2개는 비교에서 제외합니다. 격자 목록은 1280·900·768·480·375·320px에서 열 수·여백·높이·링크 정렬·가로 넘침을 별도로 검사합니다. 전체 프로젝트 7개의 화면 전환·목록 복귀·뒤로/앞으로, 새 카드의 Enter/Space·저장소 링크·모바일 너비·메인 복귀와 테마·메뉴·잘못된 ID 처리·로컬 파일 실행·브라우저 JavaScript 예외도 검사합니다. 프로젝트를 추가하면 테스트의 예상 프로젝트 ID 목록도 갱신합니다. 외부 미디어 요청은 차단하므로 외부 이미지·Google Drive 콘텐츠의 실제 접근 가능 여부는 별도 확인해야 합니다.
+320·375·480·768·900·1280px에서 대표작 순서, 전체 프로젝트 10개 진입·복귀, 다크 테마와 가로 넘침을 검사합니다. capstone 기술·담당 내용, 관련 프로젝트 링크, Enter/Space, 뒤로/앞으로, 메인 복귀, 모바일 메뉴, 테마 초기화, 상세 해시 새로고침, 잘못된 ID와 로컬 파일 실행·JavaScript 예외도 확인합니다. 실행 후 `tests/desktop.png`, `tests/mobile.png`를 생성하며 커밋에는 포함하지 않습니다. 외부 미디어 요청은 차단하므로 외부 이미지·영상의 접근과 실제 재생은 별도 확인해야 합니다.

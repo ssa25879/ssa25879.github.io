@@ -5,6 +5,16 @@
   gap: var(--space-base);
 }
 
+.projects-featured {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.projects-more-title {
+  margin: var(--space-xxl) 0 var(--space-lg);
+  font-size: 20px;
+  font-weight: 500;
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
@@ -207,6 +217,50 @@
 
 .urban-survival-gallery .screenshot-box img {
   object-fit: contain;
+}
+
+.capstone-gallery .screenshot-box {
+  padding: 0;
+}
+
+.capstone-gallery .screenshot-box img {
+  object-fit: contain;
+}
+
+.review-chatbot-gallery .screenshot-box {
+  box-sizing: border-box;
+  aspect-ratio: 5 / 3;
+  margin: 0;
+  padding: 8px;
+  flex-direction: column;
+  border-style: solid;
+}
+
+.review-chatbot-gallery {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+
+.review-chatbot-screenshot-link {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.review-chatbot-gallery .screenshot-box img {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.review-chatbot-gallery figcaption {
+  flex-shrink: 0;
+  padding-top: 6px;
+  color: var(--steel);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .image-search-gallery {
