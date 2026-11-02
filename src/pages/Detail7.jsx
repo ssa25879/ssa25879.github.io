@@ -18,7 +18,7 @@ export default function Detail7({ active, onClick }) {
       <button className="detail-back" data-back-to-projects="">← 목록으로</button>
       <div className="detail-header">
         <h1 className="detail-title">Urban Survival</h1>
-        <p className="detail-period">URP_ZombieGame · SideProject · 개발 중</p>
+        <p className="detail-period">PC · Android · 업데이트 진행 중</p>
         <div className="detail-tags">
           <span className="detail-tag">Unity 6</span><span className="detail-tag">C#</span>
           <span className="detail-tag">URP</span><span className="detail-tag">NavMesh</span>
@@ -29,8 +29,8 @@ export default function Detail7({ active, onClick }) {
       <div className="detail-section">
         <h2 className="detail-section-title">프로젝트 개요</h2>
         <p className="retro-text">
-          도시 전장에서 좀비의 공격을 피하며 생존하는 PC 싱글 플레이 탑뷰 게임입니다.
-          URP_ZombieGame의 SideProject 브랜치에서 전투, 적 생성, HUD와 설정 기능을 확장하고 있습니다.
+          도시 전장에서 좀비의 공격을 피하며 생존하는 PC·Android 싱글 플레이 탑뷰 게임입니다.
+          무기·웨이브·보스 전투와 전투 HUD, 설정 기능을 구현하고 업데이트하고 있습니다.
         </p>
       </div>
 
@@ -77,6 +77,14 @@ export default function Detail7({ active, onClick }) {
       </div>
 
       <div className="detail-section">
+        <h2 className="detail-section-title">Android 조작</h2>
+        <ul className="detail-list">
+          <li>가상 스틱 이동과 자동 조준 사격 또는 트윈 스틱 직접 조준 방식을 선택할 수 있습니다.</li>
+          <li>터치 화면에서 재장전과 무기 교체를 조작하고, 볼륨·그래픽 품질을 설정할 수 있습니다.</li>
+        </ul>
+      </div>
+
+      <div className="detail-section">
         <h2 className="detail-section-title">프로젝트 스크린샷</h2>
         <div className="screenshot-grid urban-survival-gallery">
           {screenshots.map(({ src, alt }) => (
@@ -89,8 +97,8 @@ export default function Detail7({ active, onClick }) {
 
       <div className="detail-section">
         <h2 className="detail-section-title">프로젝트 저장소</h2>
-        <a className="detail-link" href="https://github.com/ssa25879/URP_ZombieGame/tree/SideProject" target="_blank"
-          rel="noopener noreferrer">🔗 GitHub · SideProject</a>
+        <a className="detail-link" href="https://github.com/ssa25879/UrbanSurvival" target="_blank"
+          rel="noopener noreferrer">🔗 GitHub · UrbanSurvival</a>
       </div>
     </section>
 );

@@ -5,6 +5,16 @@
   gap: var(--space-base);
 }
 
+.projects-featured {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.projects-more-title {
+  margin: var(--space-xxl) 0 var(--space-lg);
+  font-size: 20px;
+  font-weight: 500;
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
@@ -206,6 +216,14 @@
 }
 
 .urban-survival-gallery .screenshot-box img {
+  object-fit: contain;
+}
+
+.capstone-gallery .screenshot-box {
+  padding: 0;
+}
+
+.capstone-gallery .screenshot-box img {
   object-fit: contain;
 }
 

@@ -1,118 +1,104 @@
-// Compare the production build against the pinned, unmodified remote main.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const http = require('node:http');
-const { execFileSync } = require('node:child_process');
 const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
-const baseline = 'e1dd9f41bd4b6cae3c96d6be82b9a1070579684c';
+const dist = path.join(root, 'dist');
 const chrome = [process.env.BROWSER_PATH, 'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find(p => p && fs.existsSync(p));
 assert(chrome, 'Set BROWSER_PATH to Chrome or Edge');
 const server = http.createServer((req, res) => {
-  const pathname = new URL(req.url, 'http://localhost').pathname;
   try {
-    let body;
-    if (pathname.startsWith('/baseline/')) {
-      const file = pathname.slice('/baseline/'.length) || 'index.html';
-      body = execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root });
-    } else {
-      const base = path.join(root, 'dist');
-      const file = path.resolve(base, '.' + (pathname === '/' ? '/index.html' : pathname));
-      if (!file.startsWith(base + path.sep)) throw new Error('Invalid path');
-      body = fs.readFileSync(file);
-    }
-    const type = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' }[path.extname(pathname)] || 'text/html';
-    res.setHeader('Content-Type', `${type}; charset=utf-8`);
-    res.end(body);
+    const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+    const file = path.resolve(dist, '.' + (pathname === '/' ? '/index.html' : pathname));
+    if (!file.startsWith(dist + path.sep)) throw new Error('Invalid path');
+    const type = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript',
+      '.svg': 'image/svg+xml', '.png': 'image/png' }[path.extname(file)] || 'application/octet-stream';
+    res.setHeader('Content-Type', type);
+    res.end(fs.readFileSync(file));
   } catch { res.writeHead(404); res.end(); }
-});
-// A lost section, changed stylesheet, media URL, or hidden-view rule must fail parity.
-const snapshot = () => [...document.querySelectorAll('nav, nav *, #mobile-drawer, #mobile-drawer *, #main-view, #main-view *, #detail-view, #detail-view *')].map(el => {
-  const s = getComputedStyle(el), r = el.getBoundingClientRect();
-  return { tag: el.tagName, id: el.id, text: el.children.length ? '' : el.textContent.replace(/\s+/g, ' ').trim(),
-    href: el.getAttribute('href'), src: el.getAttribute('src'),
-    style: Object.fromEntries(['display', 'color', 'backgroundColor', 'fontSize', 'fontWeight', 'lineHeight',
-      'marginTop', 'marginBottom', 'paddingTop', 'paddingBottom', 'borderRadius', 'gap', 'gridTemplateColumns'].map(key => [key, s[key]])),
-    rect: [r.x, r.y, r.width, r.height].map(n => Math.round(n * 100) / 100) };
 });
 let browser;
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const base = `http://127.0.0.1:${server.address().port}`;
   browser = await chromium.launch({ executablePath: chrome, headless: true });
+  const page = await browser.newPage({ reducedMotion: 'reduce' });
   const errors = [];
-  const pages = await Promise.all([browser.newPage(), browser.newPage()]);
-  for (const page of pages) {
-    page.on('pageerror', e => errors.push(e.message));
-    await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
+  async function load(suffix = '/') {
+    await page.goto(base + suffix);
+    await page.locator('#main-view').waitFor({ state: 'visible' });
+    await page.addStyleTag({ content: '* { scroll-behavior: auto !important; transition: none !important; }' });
   }
-  const [reference, actual] = pages;
-  async function load(page, url) {
-    await page.goto(base + url);
-    await page.locator('#main-view').waitFor();
-    await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; });
+  async function noOverflow(label) {
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), label);
   }
   for (const width of [1280, 900, 768, 480, 375, 320]) {
-    for (const page of pages) await page.setViewportSize({ width, height: 900 });
-    await load(reference, '/baseline/');
-    await load(actual, '/');
-    assert.deepEqual(await actual.evaluate(snapshot), await reference.evaluate(snapshot), `Main parity at ${width}px`);
-    for (const page of pages) await page.locator('[data-toggle-theme]').click();
-    for (const page of pages) await page.waitForTimeout(250);
-    assert.deepEqual(await actual.evaluate(snapshot), await reference.evaluate(snapshot), `Dark parity at ${width}px`);
-    for (let i = 1; i <= 7; i++) {
-      for (const page of pages) {
-        await page.locator(`[data-project-id="detail-${i}"]`).click();
-        await page.waitForTimeout(80);
-      }
-      assert.deepEqual(await actual.evaluate(snapshot), await reference.evaluate(snapshot), `Detail ${i} parity at ${width}px`);
-      for (const page of pages) {
-        await page.locator(`#detail-${i} [data-back-to-projects]`).click();
-        await page.locator('#main-view').waitFor({ state: 'visible' });
-      }
+    await page.setViewportSize({ width, height: 900 });
+    await load();
+    const featured = page.getByRole('group', { name: '대표 프로젝트', exact: true });
+    const other = page.getByRole('group', { name: '다른 프로젝트', exact: true });
+    assert.deepEqual(await featured.locator('[data-project-id]').evaluateAll(els => els.map(el => el.dataset.projectId)),
+      ['detail-7', 'detail-4', 'detail-6', 'detail-5', 'detail-9', 'detail-2']);
+    assert.equal(await other.locator('[data-project-id]').count(), 4);
+    await noOverflow(`Main overflow at ${width}px`);
+    for (let i = 1; i <= 10; i++) {
+      await page.locator(`[data-project-id="detail-${i}"]`).click();
+      const detail = page.locator(`#detail-${i}`);
+      await detail.waitFor({ state: 'visible' });
+      assert.equal(new URL(page.url()).hash, `#detail-${i}`);
+      assert.equal(await page.locator('.project-detail:visible').count(), 1);
+      await noOverflow(`Detail ${i} overflow at ${width}px`);
+      await detail.locator('[data-back-to-projects]').click();
+      await page.locator('#main-view').waitFor({ state: 'visible' });
     }
-    console.log(`PASS main/dark/seven details: ${width}px`);
+    await page.locator('[data-toggle-theme]').click();
+    assert(await page.locator('body').evaluate(el => el.classList.contains('dark')));
+    await noOverflow(`Dark overflow at ${width}px`);
+    console.log(`PASS ${width}px: featured order, 10 details, back navigation, theme, no overflow`);
   }
-  await load(actual, '/');
+  await load();
+  const capstone = page.locator('#detail-2');
+  await page.locator('[data-project-id="detail-2"]').click();
+  await capstone.waitFor({ state: 'visible' });
+  assert(!(await capstone.locator('.detail-tags').innerText()).includes('React'));
+  assert.equal(await capstone.locator('.detail-section').filter({ has: page.getByRole('heading', { name: '담당 내용', exact: true }) }).locator('li').count(), 3);
+  assert.equal(await capstone.locator('a[href="https://github.com/ssa25879/capstone"]').count(), 1);
+  assert.equal(await page.locator('#detail-7 a[href="https://github.com/ssa25879/UrbanSurvival"]').count(), 1);
+  assert.equal(await page.locator('#detail-4 a[href="https://youtu.be/3g2RF_wvLGw"]').count(), 1);
+  assert.equal(await page.locator('#detail-9 a[href="https://ssa25879.github.io/web-TurnCal/"]').count(), 1);
   for (const key of ['Enter', 'Space']) {
-    // Start each keyboard case with a new main entry. The logo intentionally
-    // preserves main's detail history state instead of replacing the URL.
-    await load(actual, `/?keyboard=${key}`);
-    await actual.locator('[data-project-id="detail-7"]').focus();
-    await actual.keyboard.press(key);
-    await actual.locator('#detail-7').waitFor({ state: 'visible' });
-    assert.equal(new URL(actual.url()).hash, '#detail-7');
-    await actual.goBack();
-    await actual.locator('#main-view').waitFor({ state: 'visible' });
-    await actual.goForward();
-    await actual.locator('#detail-7').waitFor({ state: 'visible' });
-    await actual.locator('[data-show-main]').first().click();
-    await actual.locator('#main-view').waitFor({ state: 'visible' });
+    await load(`/?keyboard=${key}`);
+    await page.locator('[data-project-id="detail-2"]').focus();
+    await page.keyboard.press(key);
+    await capstone.waitFor({ state: 'visible' });
+    await page.goBack();
+    await page.locator('#main-view').waitFor({ state: 'visible' });
+    await page.goForward();
+    await capstone.waitFor({ state: 'visible' });
+    await page.locator('[data-show-main]').first().click();
+    await page.locator('#main-view').waitFor({ state: 'visible' });
   }
-  await actual.locator('[data-toggle-menu]').click();
-  assert(await actual.locator('#mobile-drawer').evaluate(el => el.classList.contains('open')));
-  await actual.locator('#mobile-drawer a[href="#awards"]').click();
-  assert.equal(await actual.locator('#mobile-drawer').evaluate(el => el.classList.contains('open')), false);
-  await actual.locator('[data-toggle-theme]').click();
-  await actual.reload();
-  assert.equal(await actual.locator('body').evaluate(el => el.classList.contains('dark')), false);
-  await load(actual, '/#detail-7');
-  await actual.locator('#main-view').waitFor({ state: 'visible' });
-  assert.equal(await actual.locator('#detail-view').isVisible(), false);
-  await actual.locator('[data-project-id="detail-1"]').evaluate(el => el.setAttribute('data-project-id', 'missing'));
-  await actual.locator('[data-project-id="missing"]').click();
-  assert.equal(await actual.locator('#main-view').isVisible(), true);
-  assert.equal(new URL(actual.url()).hash, '#detail-7');
+  await page.locator('[data-toggle-menu]').click();
+  assert(await page.locator('#mobile-drawer').evaluate(el => el.classList.contains('open')));
+  await page.locator('#mobile-drawer a[href="#awards"]').click();
+  assert.equal(await page.locator('#mobile-drawer').evaluate(el => el.classList.contains('open')), false);
+  await load('/#detail-7');
+  assert.equal(await page.locator('#detail-view').isVisible(), false);
+  assert.equal(await page.locator('body').evaluate(el => el.classList.contains('dark')), false);
+  await page.locator('[data-project-id="detail-1"]').evaluate(el => el.setAttribute('data-project-id', 'missing'));
+  await page.locator('[data-project-id="missing"]').click();
+  assert(await page.locator('#main-view').isVisible());
   assert.deepEqual(errors, [], 'Browser JavaScript exceptions');
-  console.log('PASS keyboard, history, main navigation, mobile menu, reload, invalid ID, no JS exceptions');
-  await actual.goto(base + '/');
-  await actual.locator('#main-view').waitFor();
-  await actual.setViewportSize({ width: 1280, height: 900 });
-  await actual.screenshot({ path: path.join(root, 'tests/desktop.png'), fullPage: true });
-  await actual.setViewportSize({ width: 375, height: 900 });
-  await actual.screenshot({ path: path.join(root, 'tests/mobile.png'), fullPage: true });
+  await load();
+  for (const [width, name] of [[1280, 'desktop'], [375, 'mobile']]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.screenshot({ path: path.join(__dirname, `${name}.png`), fullPage: true });
+  }
+  console.log('PASS content, links, keyboard, history, mobile menu, reload, invalid ID, no JS exceptions');
 })().catch(error => { console.error(error); process.exitCode = 1; }).finally(async () => {
   if (browser) await browser.close();
   server.close();

@@ -3,7 +3,7 @@ export default function Detail9({ active, onClick }) {
     <section className="project-detail detail-page" id="detail-9" style={{ display: active ? "block" : "none" }} onClick={onClick}>
       <button className="detail-back" data-back-to-projects="">← 목록으로</button>
       <div className="detail-header">
-        <h1 className="detail-title">턴캘 (ait-TurnCal)</h1>
+        <h1 className="detail-title">턴캘</h1>
         <p className="detail-period">Apps in Toss · v1.3 출시 · 2026.10.21</p>
         <div className="detail-tags">
           <span className="detail-tag">React</span><span className="detail-tag">TypeScript</span>
@@ -46,9 +46,22 @@ export default function Detail9({ active, onClick }) {
       </div>
 
       <div className="detail-section">
+        <h2 className="detail-section-title">웹 버전으로 확장</h2>
+        <p className="retro-text">
+          토스 미니앱을 바탕으로 브라우저에서 사용할 수 있는 웹 버전을 만들었습니다.
+          자체 UI와 localStorage로 전환하고, 백업·복원과 PWA 설치·오프라인 실행을 지원합니다.
+          두 버전의 데이터는 자동으로 공유되지 않습니다.
+        </p>
+        <a className="detail-link" href="https://ssa25879.github.io/web-TurnCal/" target="_blank"
+          rel="noopener noreferrer">↗ 턴캘 웹 사용하기</a>
+      </div>
+
+      <div className="detail-section">
         <h2 className="detail-section-title">프로젝트 저장소</h2>
         <a className="detail-link" href="https://github.com/ssa25879/ait-TurnCal" target="_blank"
-          rel="noopener noreferrer">🔗 GitHub 저장소</a>
+          rel="noopener noreferrer">🔗 GitHub · 토스 미니앱</a>
+        <p><a className="detail-link" href="https://github.com/ssa25879/web-TurnCal" target="_blank"
+          rel="noopener noreferrer">🔗 GitHub · 웹 버전</a></p>
       </div>
     </section>
   );
