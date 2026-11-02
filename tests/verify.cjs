@@ -51,6 +51,17 @@ let browser;
       await detail.waitFor({ state: 'visible' });
       assert.equal(new URL(page.url()).hash, `#detail-${i}`);
       assert.equal(await page.locator('.project-detail:visible').count(), 1);
+      if ([8, 9, 11, 12, 13].includes(i)) {
+        const frames = await detail.locator('.preview-gallery-portrait .preview-image-link').evaluateAll(els =>
+          els.map(el => { const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; }));
+        assert(frames.every(r => r.width <= 181 && r.height <= 300), `Compact portrait previews at ${width}px`);
+        if (width <= 480) assert(Math.abs(frames[0].y - frames[1].y) < 1 && frames[1].x > frames[0].x,
+          `Two portrait columns on mobile at ${width}px`);
+      }
+      if ([2, 4, 5, 10].includes(i)) {
+        const heights = await detail.locator('.preview-image-link').evaluateAll(els => els.map(el => el.getBoundingClientRect().height));
+        assert(heights.every(height => height <= (width <= 480 ? 180 : 220) + 1), `Landscape preview height at ${width}px`);
+      }
       await noOverflow(`Detail ${i} overflow at ${width}px`);
       await detail.locator('[data-back-to-projects]').click();
       await page.locator('#main-view').waitFor({ state: 'visible' });
