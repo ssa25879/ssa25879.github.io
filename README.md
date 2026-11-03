@@ -49,6 +49,10 @@ GitHub Pages에는 루트 `index.html`과 `assets/`를 함께 반영합니다. �
 
 상세 해시 URL에 직접 진입하거나 새로고침하면 해당 프로젝트를 표시합니다. 테마 선택은 저장하지 않습니다.
 
+프로젝트 카드는 실제 상세 해시를 가진 링크로 제공해 새 탭 열기와 링크 복사를 지원합니다. 상세 진입 시 제목으로, 목록 복귀 시 원래 카드로 포커스를 이동합니다. 닫힌 모바일 메뉴는 `inert`로 탐색에서 제외하고, Escape 또는 데스크톱 화면 전환 시 닫습니다.
+
+검색 설명·Open Graph 이미지와 canonical URL을 제공합니다. `assets/images/portfolio-cover.jpg`는 포트폴리오 표지이며, `assets/docs/portfolio.pdf`는 PPTX v5에서 내보낸 11장 PDF입니다. 발표자 노트는 포함하지 않습니다.
+
 ## 검증
 
 `tests/verify.cjs`는 Node.js 20 이상, Playwright와 로컬 Chrome 또는 Edge가 필요합니다. 사이트 실행에 필요한 의존성은 아닙니다. `BROWSER_PATH` 환경변수로 브라우저 실행 파일을 지정할 수도 있습니다.
@@ -81,5 +85,7 @@ $env:NODE_PATH = "$runtimeRoot\node_modules"
 - 리뷰 AI: Mock 모드의 초기 화면·답변 요약·근거 리뷰
 
 자동 검사는 이미지 보강 대상과 신규 앱의 미리보기 3장 이상, 로컬 이미지 로딩·대체 텍스트, 저장소 링크와 12개 카드의 상세 탐색을 확인합니다.
+
+용량이 큰 이미지 25개는 별도의 WebP 미리보기(`assets/images/previews/`)를 사용합니다. 긴 변을 최대 1280px로 제한하며, 이 파일들의 합계는 약 20.21MiB에서 1.09MiB로 줄였습니다. 원본 PNG와 원본 열기 링크는 유지합니다. 이 수치는 초기 화면 전송량이나 실측 로딩 시간이 아닌 대상 이미지 파일 크기의 합계입니다.
 
 식품 정보 앱과 냉털픽은 `detail-8` 통합 카드로 표시합니다. 상세에 과거 Android·Java·OpenAPI 작업과 현재 React·TypeScript·AI 개발 보조 활용을 구분해 소개합니다. 초기 `detail-1` 상세는 과거 기록으로 보존하며 별도 카드는 표시하지 않습니다.

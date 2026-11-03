@@ -14,7 +14,8 @@ const server = http.createServer((req, res) => {
     const file = path.resolve(dist, '.' + (pathname === '/' ? '/index.html' : pathname));
     if (!file.startsWith(dist + path.sep)) throw new Error('Invalid path');
     const type = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript',
-      '.svg': 'image/svg+xml', '.png': 'image/png' }[path.extname(file)] || 'application/octet-stream';
+      '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp',
+      '.jpg': 'image/jpeg', '.pdf': 'application/pdf' }[path.extname(file)] || 'application/octet-stream';
     res.setHeader('Content-Type', type);
     res.end(fs.readFileSync(file));
   } catch { res.writeHead(404); res.end(); }
@@ -36,6 +37,45 @@ let browser;
   async function noOverflow(label) {
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), label);
   }
+  await load();
+  await page.locator('[data-toggle-theme]').focus();
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => !!document.activeElement.closest('#mobile-drawer')), false,
+    'Closed drawer must not receive keyboard focus');
+  assert.equal(await page.locator('a.project-card[href^="#detail-"]').count(), 12);
+  const [newTab] = await Promise.all([
+    page.context().waitForEvent('page'),
+    page.locator('[data-project-id="detail-7"]').click({ modifiers: ['Control'] }),
+  ]);
+  await newTab.locator('#detail-7').waitFor({ state: 'visible' });
+  await newTab.close();
+  assert.equal(await page.locator('#main-view').isVisible(), true);
+  assert.equal(await page.locator('meta[name="description"]').count(), 1);
+  const pdfLink = page.locator('a[download]');
+  assert.equal(await pdfLink.count(), 1);
+  const pdfResponse = await page.request.get(base + '/' + await pdfLink.getAttribute('href'));
+  assert.equal(pdfResponse.status(), 200);
+  assert.equal((await pdfResponse.body()).subarray(0, 4).toString(), '%PDF');
+  for (const id of [6, 7, 9, 10]) {
+    assert((await page.locator(`#detail-${id} .detail-tags`).textContent()).includes('개인 프로젝트'));
+  }
+  await page.setViewportSize({ width: 375, height: 900 });
+  const menu = page.locator('[data-toggle-menu]');
+  assert.equal(await menu.getAttribute('aria-label'), '메뉴 열기');
+  await menu.click();
+  assert.equal(await menu.getAttribute('aria-expanded'), 'true');
+  await page.keyboard.press('Escape');
+  assert.equal(await menu.getAttribute('aria-expanded'), 'false');
+  assert.equal(await page.locator('#mobile-drawer').evaluate(el => el.inert), true);
+  await menu.click();
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.waitForFunction(() => !document.getElementById('mobile-drawer').classList.contains('open'));
+  assert.equal(await menu.getAttribute('aria-expanded'), 'false');
+  await page.locator('[data-project-id="detail-7"]').click();
+  assert.equal(await page.evaluate(() => document.activeElement.id), 'detail-7-title');
+  await page.locator('#detail-7 [data-back-to-projects]').click();
+  await page.locator('#main-view').waitFor({ state: 'visible' });
+  assert.equal(await page.evaluate(() => document.activeElement.dataset.projectId), 'detail-7');
   for (const width of [1280, 900, 768, 480, 375, 320]) {
     await page.setViewportSize({ width, height: 900 });
     await load();
