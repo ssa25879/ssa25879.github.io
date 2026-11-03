@@ -9,6 +9,7 @@ export default function Hero() {
       <div className="hero-btns">
         <a href="#projects" className="btn btn-primary">프로젝트 보기</a>
         <a href="#contact" className="btn btn-secondary">연락하기</a>
+        <a href="assets/docs/portfolio.pdf" className="btn btn-secondary" download="윤우상_포트폴리오.pdf">포트폴리오 PDF</a>
       </div>
     </section>
 );

@@ -8,7 +8,7 @@ export default function Projects({ onClick, onKeyDown }) {
         대표 프로젝트
       </h2>
       <div className="projects-grid projects-featured" role="group" aria-label="대표 프로젝트">
-        <div className="project-card" role="button" tabIndex="0" aria-label="Urban Survival 프로젝트 상세보기" data-project-id="detail-7">
+        <a className="project-card" href="#detail-7" aria-label="Urban Survival 프로젝트 상세보기" data-project-id="detail-7">
           <p className="project-desc project-kind">
             [Game / Unity / PC · Android]
           </p>
@@ -38,8 +38,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="VR 리듬게임 프로젝트 상세보기" data-project-id="detail-4">
+        </a>
+        <a className="project-card" href="#detail-4" aria-label="VR 리듬게임 프로젝트 상세보기" data-project-id="detail-4">
           <p className="project-desc project-kind">
             [Game / Unity / VR]
           </p>
@@ -63,8 +63,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="이미지 검색 앱 프로젝트 상세보기" data-project-id="detail-6">
+        </a>
+        <a className="project-card" href="#detail-6" aria-label="이미지 검색 앱 프로젝트 상세보기" data-project-id="detail-6">
           <p className="project-desc project-kind">
             [App / UI / API]
           </p>
@@ -94,8 +94,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="보드게임 AR 가이드 앱 프로젝트 상세보기" data-project-id="detail-5">
+        </a>
+        <a className="project-card" href="#detail-5" aria-label="보드게임 AR 가이드 앱 프로젝트 상세보기" data-project-id="detail-5">
           <p className="project-desc project-kind">
             [AR / Virnect Make]
           </p>
@@ -119,8 +119,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="턴캘 토스 미니앱 프로젝트 상세보기" data-project-id="detail-9">
+        </a>
+        <a className="project-card" href="#detail-9" aria-label="턴캘 토스 미니앱 프로젝트 상세보기" data-project-id="detail-9">
           <p className="project-desc project-kind">
             [Mini App / Web · PWA]
           </p>
@@ -147,8 +147,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="Frending · 마크다운 SNS 프로젝트 상세보기" data-project-id="detail-2">
+        </a>
+        <a className="project-card" href="#detail-2" aria-label="Frending · 마크다운 SNS 프로젝트 상세보기" data-project-id="detail-2">
           <p className="project-desc project-kind">
             [Web / SNS]
           </p>
@@ -175,13 +175,13 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
+        </a>
       </div>
       <h3 className="projects-more-title">
         다른 프로젝트
       </h3>
       <div className="projects-grid" role="group" aria-label="다른 프로젝트">
-<div className="project-card" role="button" tabIndex="0" aria-label="Dodge 게임 프로젝트 상세보기" data-project-id="detail-3">
+<a className="project-card" href="#detail-3" aria-label="Dodge 게임 프로젝트 상세보기" data-project-id="detail-3">
           <p className="project-desc project-kind">
             [Game / Unity]
           </p>
@@ -208,8 +208,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="식품 정보 앱에서 냉털픽으로 발전한 프로젝트 상세보기" data-project-id="detail-8">
+        </a>
+        <a className="project-card" href="#detail-8" aria-label="식품 정보 앱에서 냉털픽으로 발전한 프로젝트 상세보기" data-project-id="detail-8">
           <p className="project-desc project-kind">
             [Mini App / Apps in Toss]
           </p>
@@ -236,8 +236,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="쇼핑 리뷰 AI 분석기 프로젝트 상세보기" data-project-id="detail-10">
+        </a>
+        <a className="project-card" href="#detail-10" aria-label="쇼핑 리뷰 AI 분석기 프로젝트 상세보기" data-project-id="detail-10">
           <p className="project-desc project-kind">
             [Web / AI / RAG]
           </p>
@@ -267,8 +267,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="인계한장 프로젝트 상세보기" data-project-id="detail-11">
+        </a>
+        <a className="project-card" href="#detail-11" aria-label="인계한장 프로젝트 상세보기" data-project-id="detail-11">
           <p className="project-desc project-kind">
             [Mini App / Apps in Toss]
           </p>
@@ -292,8 +292,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="복습큐 프로젝트 상세보기" data-project-id="detail-12">
+        </a>
+        <a className="project-card" href="#detail-12" aria-label="복습큐 프로젝트 상세보기" data-project-id="detail-12">
           <p className="project-desc project-kind">
             [Mini App / Apps in Toss]
           </p>
@@ -317,8 +317,8 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
-        <div className="project-card" role="button" tabIndex="0" aria-label="구독레이더 프로젝트 상세보기" data-project-id="detail-13">
+        </a>
+        <a className="project-card" href="#detail-13" aria-label="구독레이더 프로젝트 상세보기" data-project-id="detail-13">
           <p className="project-desc project-kind">
             [Mini App / Apps in Toss]
           </p>
@@ -342,7 +342,7 @@ export default function Projects({ onClick, onKeyDown }) {
           <span className="project-more">
             자세히 보기 →
           </span>
-        </div>
+        </a>
       </div>
     </section>
   );

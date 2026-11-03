@@ -1,3 +1,8 @@
+import titleScreenPreview from "../assets/previews/urban-survival-urban-survival-title.webp";
+import rifleScreenPreview from "../assets/previews/urban-survival-urban-survival-combat_rifle.webp";
+import shotgunScreenPreview from "../assets/previews/urban-survival-urban-survival-combat_shotgun.webp";
+import bossScreenPreview from "../assets/previews/urban-survival-urban-survival-boss_redzone.webp";
+import finalBossScreenPreview from "../assets/previews/urban-survival-urban-survival-final_boss.webp";
 import titleScreen from "../assets/urban-survival/urban-survival-title.png";
 import rifleScreen from "../assets/urban-survival/urban-survival-combat_rifle.png";
 import shotgunScreen from "../assets/urban-survival/urban-survival-combat_shotgun.png";
@@ -5,11 +10,11 @@ import bossScreen from "../assets/urban-survival/urban-survival-boss_redzone.png
 import finalBossScreen from "../assets/urban-survival/urban-survival-final_boss.png";
 
 const screenshots = [
-  { src: titleScreen, alt: "Urban Survival 타이틀 화면" },
-  { src: rifleScreen, alt: "소총으로 좀비 웨이브에 맞서는 전투 화면" },
-  { src: shotgunScreen, alt: "산탄총으로 좀비 무리를 상대하는 전투 화면" },
-  { src: bossScreen, alt: "보스의 공격 범위가 표시된 전투 화면" },
-  { src: finalBossScreen, alt: "최종 보스전 화면" },
+  { src: titleScreen, preview: titleScreenPreview, alt: "Urban Survival 타이틀 화면" },
+  { src: rifleScreen, preview: rifleScreenPreview, alt: "소총으로 좀비 웨이브에 맞서는 전투 화면" },
+  { src: shotgunScreen, preview: shotgunScreenPreview, alt: "산탄총으로 좀비 무리를 상대하는 전투 화면" },
+  { src: bossScreen, preview: bossScreenPreview, alt: "보스의 공격 범위가 표시된 전투 화면" },
+  { src: finalBossScreen, preview: finalBossScreenPreview, alt: "최종 보스전 화면" },
 ];
 
 export default function Detail7({ active, onClick }) {
@@ -20,6 +25,7 @@ export default function Detail7({ active, onClick }) {
         <h1 className="detail-title">Urban Survival</h1>
         <p className="detail-period">PC · Android · 기본 개발 완료 후 개선 중</p>
         <div className="detail-tags">
+          <span className="detail-tag">개인 프로젝트</span>
           <span className="detail-tag">Unity 6</span><span className="detail-tag">C#</span>
           <span className="detail-tag">URP</span><span className="detail-tag">NavMesh</span>
           <span className="detail-tag">uGUI</span><span className="detail-tag">AudioMixer</span>
@@ -87,9 +93,9 @@ export default function Detail7({ active, onClick }) {
       <div className="detail-section">
         <h2 className="detail-section-title">프로젝트 스크린샷</h2>
         <div className="screenshot-grid urban-survival-gallery">
-          {screenshots.map(({ src, alt }) => (
+          {screenshots.map(({ src, preview, alt }) => (
             <div className="screenshot-box" key={src}>
-              <img src={src} alt={alt} loading="lazy" decoding="async" />
+              <img src={preview || src} alt={alt} loading="lazy" decoding="async" />
             </div>
           ))}
         </div>

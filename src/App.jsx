@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Navbar from './componets/Navbar.jsx';
 import Hero from './sections/Hero.jsx';
 import About from './sections/About.jsx';
@@ -20,6 +20,44 @@ export default function App() {
   const [projectId, setProjectId] = useState(projectFromHash);
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const lastProjectId = useRef(null);
+  const restoreFocus = useRef(false);
+
+  useEffect(() => {
+    if (projectId) {
+      lastProjectId.current = projectId;
+      const title = document.querySelector(`#${projectId} h1`);
+      title.id = `${projectId}-title`;
+      title.tabIndex = -1;
+      title.focus({ preventScroll: true });
+    } else if (restoreFocus.current && lastProjectId.current) {
+      document.querySelector(`[data-project-id="${lastProjectId.current}"]`)?.focus();
+      restoreFocus.current = false;
+    }
+  }, [projectId]);
+
+  useEffect(() => {
+    if (menuOpen) document.querySelector('#mobile-drawer a').focus();
+  }, [menuOpen]);
+
+  useEffect(() => {
+    function onEscape(event) {
+      if (event.key === 'Escape' && menuOpen) {
+        setMenuOpen(false);
+        document.querySelector('[data-toggle-menu]').focus();
+      }
+    }
+    const desktop = window.matchMedia('(min-width: 769px)');
+    function onDesktop(event) {
+      if (event.matches) setMenuOpen(false);
+    }
+    document.addEventListener('keydown', onEscape);
+    desktop.addEventListener('change', onDesktop);
+    return () => {
+      document.removeEventListener('keydown', onEscape);
+      desktop.removeEventListener('change', onDesktop);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     document.body.classList.toggle('dark', dark);
@@ -29,6 +67,7 @@ export default function App() {
   useEffect(() => {
     function syncLocation() {
       const id = projectFromHash();
+      restoreFocus.current = !id;
       setProjectId(id);
       if (id) window.scrollTo(0, 0);
     }
@@ -47,23 +86,38 @@ export default function App() {
     if (mainLink) {
       event.preventDefault();
       const hash = mainLink.getAttribute('href') || '#';
+      restoreFocus.current = false;
       history.pushState(null, '', hash);
       setProjectId(null);
       requestAnimationFrame(() => {
         if (hash === '#') window.scrollTo(0, 0);
-        else document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
+        else {
+          const section = document.getElementById(hash.slice(1));
+          section?.scrollIntoView({ behavior: 'instant' });
+          if (mainLink.hasAttribute('data-close-menu')) {
+            const heading = section?.querySelector('h2');
+            if (heading) {
+              heading.tabIndex = -1;
+              heading.focus({ preventScroll: true });
+            }
+          }
+        }
       });
     }
     if (event.target.closest('[data-close-menu]')) setMenuOpen(false);
   }
 
   function openProject(event) {
-    const id = event.target.closest('[data-project-id]')?.dataset.projectId;
-    if (!projectIds.has(id)) return;
+    const card = event.target.closest('[data-project-id]');
+    if (!card) return;
     if (event.type === 'keydown') {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
+      if (event.key !== ' ') return;
+    } else if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+      return;
     }
+    event.preventDefault();
+    const id = card.dataset.projectId;
+    if (!projectIds.has(id)) return;
     setProjectId(id);
     history.pushState({ view: 'detail', projectId: id }, '', `#${id}`);
     window.scrollTo(0, 0);
@@ -74,6 +128,7 @@ export default function App() {
     if (history.state?.view === 'detail') {
       history.back();
     } else {
+      restoreFocus.current = true;
       history.replaceState(null, '', '#projects');
       setProjectId(null);
       requestAnimationFrame(() => document.getElementById('projects').scrollIntoView({ behavior: 'instant' }));

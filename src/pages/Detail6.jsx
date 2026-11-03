@@ -1,11 +1,14 @@
+import flowersScreenPreview from "../assets/previews/image-search-flowers.webp";
+import catsScreenPreview from "../assets/previews/image-search-cats.webp";
+import forestScreenPreview from "../assets/previews/image-search-forest.webp";
 import flowersScreen from "../assets/image-search/flowers.png";
 import catsScreen from "../assets/image-search/cats.png";
 import forestScreen from "../assets/image-search/forest.png";
 
 const screenshots = [
-  { src: flowersScreen, label: "꽃 검색", alt: "꽃 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
-  { src: catsScreen, label: "고양이 검색", alt: "고양이 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
-  { src: forestScreen, label: "숲 검색", alt: "숲 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
+  { src: flowersScreen, preview: flowersScreenPreview, label: "꽃 검색", alt: "꽃 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
+  { src: catsScreen, preview: catsScreenPreview, label: "고양이 검색", alt: "고양이 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
+  { src: forestScreen, preview: forestScreenPreview, label: "숲 검색", alt: "숲 검색 결과와 Pixabay 사진을 표시한 이미지 검색 앱" },
 ];
 
 export default function Detail6({ active, onClick }) {
@@ -16,6 +19,7 @@ export default function Detail6({ active, onClick }) {
         <h1 className="detail-title">이미지 검색 앱</h1>
         <p className="detail-period">UsingAI-ImageSearchApp · Unity 기반 앱 개발</p>
         <div className="detail-tags">
+          <span className="detail-tag">개인 프로젝트</span>
           <span className="detail-tag">Unity 6</span><span className="detail-tag">C#</span>
           <span className="detail-tag">UI Toolkit</span><span className="detail-tag">UniTask</span>
           <span className="detail-tag">Pixabay API</span>
@@ -33,10 +37,10 @@ export default function Detail6({ active, onClick }) {
       <div className="detail-section">
         <h2 className="detail-section-title">실행 화면</h2>
         <div className="screenshot-grid image-search-gallery">
-          {screenshots.map(({ src, label, alt }) => (
+          {screenshots.map(({ src, preview, label, alt }) => (
             <figure key={src}>
               <a className="screenshot-box" href={src} target="_blank" rel="noopener noreferrer">
-                <img src={src} alt={alt} width="1080" height="1920" loading="lazy" />
+                <img src={preview || src} alt={alt} width="1080" height="1920" loading="lazy" />
               </a>
               <figcaption>{label}</figcaption>
             </figure>

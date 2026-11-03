@@ -1,3 +1,7 @@
+import preview1Preview from "../assets/previews/vr-rhythm-stage-select.webp";
+import preview2Preview from "../assets/previews/vr-rhythm-hit-effect.webp";
+import preview3Preview from "../assets/previews/vr-rhythm-gameplay-notes.webp";
+import preview4Preview from "../assets/previews/vr-rhythm-direction-notes.webp";
 import preview1 from "../assets/vr-rhythm/stage-select.png";
 import preview2 from "../assets/vr-rhythm/hit-effect.png";
 import preview3 from "../assets/vr-rhythm/gameplay-notes.png";
@@ -76,7 +80,7 @@ export default function Detail4({ active, onClick }) {
         <div className="screenshot-grid preview-gallery">
           <figure>
             <a className="preview-image-link" href={preview1} target="_blank" rel="noopener noreferrer" aria-label="스테이지 선택 원본 이미지 열기">
-              <img src={preview1} alt="스테이지 선택" width="1920" height="1080" loading="lazy" decoding="async" />
+              <img src={preview1Preview} alt="스테이지 선택" width="1920" height="1080" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               스테이지 선택
@@ -84,7 +88,7 @@ export default function Detail4({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview2} target="_blank" rel="noopener noreferrer" aria-label="세이버 타격 효과 원본 이미지 열기">
-              <img src={preview2} alt="세이버 타격 효과" width="1920" height="1080" loading="lazy" decoding="async" />
+              <img src={preview2Preview} alt="세이버 타격 효과" width="1920" height="1080" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               세이버 타격 효과
@@ -92,7 +96,7 @@ export default function Detail4({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview3} target="_blank" rel="noopener noreferrer" aria-label="양손 세이버와 노트 원본 이미지 열기">
-              <img src={preview3} alt="양손 세이버와 노트" width="1920" height="1080" loading="lazy" decoding="async" />
+              <img src={preview3Preview} alt="양손 세이버와 노트" width="1920" height="1080" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               양손 세이버와 노트
@@ -100,7 +104,7 @@ export default function Detail4({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview4} target="_blank" rel="noopener noreferrer" aria-label="방향 노트 플레이 원본 이미지 열기">
-              <img src={preview4} alt="방향 노트 플레이" width="1920" height="1080" loading="lazy" decoding="async" />
+              <img src={preview4Preview} alt="방향 노트 플레이" width="1920" height="1080" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               방향 노트 플레이

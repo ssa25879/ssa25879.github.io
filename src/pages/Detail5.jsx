@@ -1,3 +1,6 @@
+import preview1Preview from "../assets/previews/ar-guide-preview-1.webp";
+import preview2Preview from "../assets/previews/ar-guide-preview-2.webp";
+import preview3Preview from "../assets/previews/ar-guide-preview-3.webp";
 import preview1 from "../assets/ar-guide/preview-1.png";
 import preview2 from "../assets/ar-guide/preview-2.png";
 import preview3 from "../assets/ar-guide/preview-3.png";
@@ -52,7 +55,7 @@ export default function Detail5({ active, onClick }) {
         </h2>
         <div className="detail-subsection">
           <div className="detail-subsection-title">
-            1. 팀장으로서의 역할 및 기여
+            1. 본인 담당 · 팀장 역할
           </div>
           <ul className="detail-list">
             <li>
@@ -62,7 +65,7 @@ export default function Detail5({ active, onClick }) {
         </div>
         <div className="detail-subsection">
           <div className="detail-subsection-title">
-            2. 콘텐츠 구조 설계
+            2. 팀 전체 구현 · 콘텐츠 구조 설계
           </div>
           <ul className="detail-list">
             <li>
@@ -75,7 +78,7 @@ export default function Detail5({ active, onClick }) {
         </div>
         <div className="detail-subsection">
           <div className="detail-subsection-title">
-            3. TTS 음성 안내
+            3. 팀 전체 구현 · TTS 음성 안내
           </div>
           <ul className="detail-list">
             <li>
@@ -91,7 +94,7 @@ export default function Detail5({ active, onClick }) {
         <div className="screenshot-grid preview-gallery">
           <figure>
             <a className="preview-image-link" href={preview1} target="_blank" rel="noopener noreferrer" aria-label="보드게임 가이드 사용 원본 이미지 열기">
-              <img src={preview1} alt="보드게임 가이드 사용" width="1920" height="1080" loading="lazy" decoding="async" />
+              <img src={preview1Preview} alt="보드게임 가이드 사용" width="1920" height="1080" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               보드게임 가이드 사용
@@ -99,7 +102,7 @@ export default function Detail5({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview2} target="_blank" rel="noopener noreferrer" aria-label="AR 이미지 인식 원본 이미지 열기">
-              <img src={preview2} alt="AR 이미지 인식" width="1920" height="1080" loading="lazy" decoding="async" />
+              <img src={preview2Preview} alt="AR 이미지 인식" width="1920" height="1080" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               AR 이미지 인식
@@ -107,7 +110,7 @@ export default function Detail5({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview3} target="_blank" rel="noopener noreferrer" aria-label="규칙 정보 오버레이 원본 이미지 열기">
-              <img src={preview3} alt="규칙 정보 오버레이" width="1920" height="1080" loading="lazy" decoding="async" />
+              <img src={preview3Preview} alt="규칙 정보 오버레이" width="1920" height="1080" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               규칙 정보 오버레이

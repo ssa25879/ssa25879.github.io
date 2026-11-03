@@ -1,3 +1,6 @@
+import preview1Preview from "../assets/previews/fridgepick-preview-1.webp";
+import preview2Preview from "../assets/previews/fridgepick-preview-2.webp";
+import preview3Preview from "../assets/previews/fridgepick-preview-3.webp";
 import preview1 from "../assets/fridgepick/preview-1.png";
 import preview2 from "../assets/fridgepick/preview-2.png";
 import preview3 from "../assets/fridgepick/preview-3.png";
@@ -109,7 +112,7 @@ export default function Detail8({ active, onClick }) {
         <div className="screenshot-grid preview-gallery preview-gallery-portrait">
           <figure>
             <a className="preview-image-link" href={preview1} target="_blank" rel="noopener noreferrer" aria-label="냉털픽 등록용 미리보기 1 원본 이미지 열기">
-              <img src={preview1} alt="냉털픽 등록용 미리보기 1" width="636" height="1048" loading="lazy" decoding="async" />
+              <img src={preview1Preview} alt="냉털픽 등록용 미리보기 1" width="636" height="1048" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               냉털픽 등록용 미리보기 1
@@ -117,7 +120,7 @@ export default function Detail8({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview2} target="_blank" rel="noopener noreferrer" aria-label="냉털픽 등록용 미리보기 2 원본 이미지 열기">
-              <img src={preview2} alt="냉털픽 등록용 미리보기 2" width="636" height="1048" loading="lazy" decoding="async" />
+              <img src={preview2Preview} alt="냉털픽 등록용 미리보기 2" width="636" height="1048" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               냉털픽 등록용 미리보기 2
@@ -125,7 +128,7 @@ export default function Detail8({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview3} target="_blank" rel="noopener noreferrer" aria-label="냉털픽 등록용 미리보기 3 원본 이미지 열기">
-              <img src={preview3} alt="냉털픽 등록용 미리보기 3" width="636" height="1048" loading="lazy" decoding="async" />
+              <img src={preview3Preview} alt="냉털픽 등록용 미리보기 3" width="636" height="1048" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               냉털픽 등록용 미리보기 3

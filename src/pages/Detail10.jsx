@@ -1,3 +1,5 @@
+import preview2Preview from "../assets/previews/review-chatbot-mock-answer-summary.webp";
+import preview3Preview from "../assets/previews/review-chatbot-mock-answer-evidence-reviews.webp";
 import preview1 from "../assets/review-chatbot/mock-start.png";
 import preview2 from "../assets/review-chatbot/mock-answer-summary.png";
 import preview3 from "../assets/review-chatbot/mock-answer-evidence-reviews.png";
@@ -16,6 +18,7 @@ export default function Detail10({ active, onClick }) {
           review-chatbot · Next.js 16 App Router
         </p>
         <div className="detail-tags">
+          <span className="detail-tag">개인 프로젝트</span>
           <span className="detail-tag">
             Next.js
           </span>
@@ -62,7 +65,7 @@ export default function Detail10({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview2} target="_blank" rel="noopener noreferrer" aria-label="분석 답변과 리뷰 요약 원본 이미지 열기">
-              <img src={preview2} alt="분석 답변과 리뷰 요약" width="1519" height="909" loading="lazy" decoding="async" />
+              <img src={preview2Preview} alt="분석 답변과 리뷰 요약" width="1519" height="909" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               분석 답변과 리뷰 요약
@@ -70,7 +73,7 @@ export default function Detail10({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview3} target="_blank" rel="noopener noreferrer" aria-label="답변 근거 리뷰 원본 이미지 열기">
-              <img src={preview3} alt="답변 근거 리뷰" width="1519" height="909" loading="lazy" decoding="async" />
+              <img src={preview3Preview} alt="답변 근거 리뷰" width="1519" height="909" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               답변 근거 리뷰

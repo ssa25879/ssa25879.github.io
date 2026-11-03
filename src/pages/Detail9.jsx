@@ -17,6 +17,7 @@ export default function Detail9({ active, onClick }) {
           Apps in Toss · v1.3 출시 · 2026.10.21
         </p>
         <div className="detail-tags">
+          <span className="detail-tag">개인 프로젝트</span>
           <span className="detail-tag">
             React
           </span>

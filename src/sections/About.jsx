@@ -25,9 +25,9 @@ export default function About() {
           </div>
         </div>
         <div className="edu-card">
-          <span className="edu-badge edu-badge-active">현재 소속중</span>
+          <span className="edu-badge edu-badge-active">교육 중</span>
           <div className="edu-school">한국폴리텍대학 광명융합기술교육원</div>
-          <div className="edu-detail">하이테크 과정 증강현실과</div>
+          <div className="edu-detail">하이테크 과정 증강현실과 · 2026.03 ~ 2026.12</div>
         </div>
       </div>
     </section>

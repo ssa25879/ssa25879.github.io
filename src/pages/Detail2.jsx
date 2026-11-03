@@ -1,3 +1,5 @@
+import preview1Preview from "../assets/previews/capstone-home.webp";
+import preview2Preview from "../assets/previews/capstone-comments.webp";
 import preview1 from "../assets/capstone/home.png";
 import preview2 from "../assets/capstone/comments.png";
 import preview3 from "../assets/capstone/profile.png";
@@ -98,7 +100,7 @@ export default function Detail2({ active, onClick }) {
         <div className="screenshot-grid preview-gallery">
           <figure>
             <a className="preview-image-link" href={preview1} target="_blank" rel="noopener noreferrer" aria-label="Frending 게시글 피드 원본 이미지 열기">
-              <img src={preview1} alt="Frending 게시글 피드" width="2880" height="3088" loading="lazy" decoding="async" />
+              <img src={preview1Preview} alt="Frending 게시글 피드" width="2880" height="3088" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               Frending 게시글 피드
@@ -106,7 +108,7 @@ export default function Detail2({ active, onClick }) {
           </figure>
           <figure>
             <a className="preview-image-link" href={preview2} target="_blank" rel="noopener noreferrer" aria-label="게시글과 댓글 원본 이미지 열기">
-              <img src={preview2} alt="게시글과 댓글" width="2880" height="1800" loading="lazy" decoding="async" />
+              <img src={preview2Preview} alt="게시글과 댓글" width="2880" height="1800" loading="lazy" decoding="async" />
             </a>
             <figcaption>
               게시글과 댓글
